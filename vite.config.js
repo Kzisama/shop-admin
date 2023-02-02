@@ -6,6 +6,15 @@ import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue(), WindiCSS()],
+  server: {
+    proxy: {
+      "/base": {
+        target: "http://ceshi13.dishait.cn",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/base/, ""),
+      },
+    }
+  },
   resolve: {
     alias: {
       "@": path.join(__dirname, "src"),

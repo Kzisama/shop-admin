@@ -6,8 +6,8 @@ const routes = [
     component: () => import("@/pages/layout/index.vue"),
   },
   {
-    path: "/about",
-    component: () => import("@/pages/about/index.vue"),
+    path: "/login",
+    component: () => import("@/pages/login/index.vue"),
   },
   {
     path: "/:pathMatch(.*)*",
