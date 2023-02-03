@@ -76,12 +76,8 @@ const onSubmit = (formEl) => {
     loading.value = true; // 按钮处于加载状态
     loginAPI(form.username, form.password).then(res => {
       useNotification("登录成功", "success");
+      // 保存token
       useSetToken(res.token);
-      // 记录用户信息
-      getAdminInfoAPI().then(res2 => {
-        store.commit("SET_USERINFO", res2);
-        console.log(res2);
-      });
       router.push("/");
     }).finally(() => {
       loading.value = false;
@@ -93,29 +89,29 @@ const onSubmit = (formEl) => {
 
 <style lang="less" scoped>
 .login-container {
-@apply min-h-screen bg-indigo-500;
+  @apply min-h-screen bg-indigo-500;
 
   .left {
-  @apply flex justify-center items-center;
+    @apply flex justify-center items-center;
 
     .welcome {
-    @apply font-bold text-3xl text-light-50 mb-4;
+      @apply font-bold text-3xl text-light-50 mb-4;
     }
 
     .text {
-    @apply text-gray-200 text-sm;
+      @apply text-gray-200 text-sm;
     }
   }
 
   .right {
-  @apply bg-light-50 flex flex-col justify-center items-center;
+    @apply bg-light-50 flex flex-col justify-center items-center;
 
     .title {
-    @apply text-3xl font-bold text-gray-800;
+      @apply text-3xl font-bold text-gray-800;
     }
 
-    & > div {
-    @apply flex justify-center items-center space-x-2 my-5 text-gray-300;
+    &>div {
+      @apply flex justify-center items-center space-x-2 my-5 text-gray-300;
     }
   }
 }
