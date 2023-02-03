@@ -2,6 +2,15 @@ import axios from "axios";
 import { useNotification } from "@/composables/encapsulation.js";
 import { useCookies } from "@vueuse/integrations/useCookies";
 
+// 处理  类型“AxiosResponse<any, any>”上不存在属性“errorinfo”。ts(2339) 脑壳疼！关键一步。
+declare module "axios" {
+	interface AxiosResponse<T = any> {
+		token: string;
+		// 这里追加你的参数
+	}
+	export function create(config?: AxiosRequestConfig): AxiosInstance;
+}
+
 const service = axios.create({
 	baseURL: "/base",
 	timeout: 20000,
@@ -33,7 +42,7 @@ service.interceptors.response.use(
 	},
 	function (error) {
 		// 对响应错误做点什么
-		useNotification(error.response.data.msg || "请求错误", "error");
+		useNotification(error.response.data.msg || "请求错误", "error", "");
 		return Promise.reject(error);
 	}
 );

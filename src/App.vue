@@ -1,8 +1,11 @@
 <template>
-  <!-- px === padding X -->
   <router-view></router-view>
 </template>
 
-<script setup></script>
+<script setup lang="ts">
 
-<style scoped></style>
+</script>
+
+<style scoped lang="less">
+
+</style>

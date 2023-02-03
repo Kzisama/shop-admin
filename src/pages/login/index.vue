@@ -41,18 +41,21 @@
   </el-row>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { setToken } from "@/untils/auth.js";
 import { useNotification } from "@/composables/encapsulation";
 import { loginAPI } from "@/api/manage.js";
 import { Lock, User } from "@element-plus/icons-vue";
+import type { FormInstance, FormRules } from 'element-plus'
+import { AxiosResponse } from "axios";
+import { from } from "rxjs";
 
 const router = useRouter();
-const loading = ref(false);
+const loading = ref<boolean>(false);
 
-const formRef = ref(null);
+const formRef = ref<FormInstance>();
 // 表单
 const form = reactive({
   username: "",
@@ -64,23 +67,26 @@ const rules = {
   password: [{ required: true, message: "用户名不能为空", trigger: "blur" }]
 };
 // 提交
-const onSubmit = (formEl) => {
+const onSubmit = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
-  formEl.validate(valid => {
+  formEl.validate(async valid => {
     if (!valid) {
-      useNotification("请填写完整信息", "warning");
+      useNotification("请填写完整信息", "warning", '');
+      // 重置表单
+      formEl.resetFields()
       return false;
     }
     loading.value = true; // 按钮处于加载状态
     loginAPI(form.username, form.password).then(res => {
-      useNotification("登录成功", "success");
+      useNotification("登录成功", "success", '');
       // 保存token
       setToken(res.token);
       router.push("/");
     }).finally(() => {
       loading.value = false;
-    });
-
+      // 重置表单
+      formEl.resetFields()
+    })
   });
 };
 </script>

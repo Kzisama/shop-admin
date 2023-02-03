@@ -3,7 +3,7 @@ import { useCookies } from "@vueuse/integrations/useCookies";
 const TokenKey = "admin-token";
 const cookie = useCookies();
 // 设置token
-export const setToken = (token) => {
+export const setToken = (token: string) => {
 	cookie.set(TokenKey, token);
 };
 // 获取token

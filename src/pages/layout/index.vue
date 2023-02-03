@@ -3,7 +3,7 @@
   <el-button @click="logout">退出登录</el-button>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { logoutAPI } from '@/api/manage';
@@ -15,10 +15,10 @@ const store = useStore();
 
 const logout = () => {
   // ElMessageBox 返回的是一个promise对象
-  useElMessageBox('是否要退出登录', '退出登录').then((res) => {
+  useElMessageBox('是否要退出登录', '退出登录', '').then((res) => {
     logoutAPI().finally(() => {
       removeToken();
-      useNotification('退出登录成功');
+      useNotification('退出登录成功', 'success', '');
       store.commit('SET_USERINFO', {});
       router.replace('/login');
     });

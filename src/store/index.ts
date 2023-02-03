@@ -19,11 +19,11 @@ const store = createStore({
 		getinfo({ commit }) {
 			return new Promise((resolve, reject) => {
 				getAdminInfoAPI()
-					.then((res) => {
+					.then((res: unknown) => {
 						commit("SET_USERINFO", res);
 						resolve(res);
 					})
-					.catch((err) => reject(err));
+					.catch((err: any) => reject(err));
 			});
 		},
 	},

@@ -2,7 +2,7 @@
 import axios from "@/untils/axios.js";
 
 // 登录
-export const loginAPI = (username, password) => {
+export const loginAPI = (username: string, password: string) => {
 	return axios.post("/admin/login", {
 		username,
 		password,

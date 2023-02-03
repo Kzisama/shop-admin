@@ -1,7 +1,7 @@
 // 二次封装element组件
 import { ElNotification, ElMessageBox } from "element-plus";
 
-export const useNotification = (message, type = "success", title = null) => {
+export const useNotification = (message: string, type: any, title: string) => {
 	return ElNotification({
 		title,
 		message,
@@ -10,11 +10,7 @@ export const useNotification = (message, type = "success", title = null) => {
 	});
 };
 
-export const useElMessageBox = (
-	content = "提示内容",
-	title = "",
-	type = "waring"
-) => {
+export const useElMessageBox = (content: any, title: any, type: any) => {
 	return ElMessageBox.confirm(content, title, {
 		confirmButtonText: "确定",
 		cancelButtonText: "取消",
