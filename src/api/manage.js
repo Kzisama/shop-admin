@@ -3,13 +3,18 @@ import axios from "@/untils/axios.js";
 
 // 登录
 export const loginAPI = (username, password) => {
-  return axios.post("/admin/login", {
-    username,
-    password
-  });
+	return axios.post("/admin/login", {
+		username,
+		password,
+	});
+};
+
+// 退出登录
+export const logoutAPI = () => {
+	return axios.post("/admin/logout");
 };
 
 // 获取管理员信息
 export const getAdminInfoAPI = () => {
-  return axios.post("/admin/getinfo");
+	return axios.post("/admin/getinfo");
 };

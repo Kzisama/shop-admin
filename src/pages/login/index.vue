@@ -44,14 +44,12 @@
 <script setup>
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useStore } from "vuex";
-import { useSetToken } from "@/hooks/auth.js";
-import { useNotification } from "@/hooks/notification.js";
-import { getAdminInfoAPI, loginAPI } from "@/api/manage.js";
+import { setToken } from "@/untils/auth.js";
+import { useNotification } from "@/composables/encapsulation";
+import { loginAPI } from "@/api/manage.js";
 import { Lock, User } from "@element-plus/icons-vue";
 
 const router = useRouter();
-const store = useStore();
 const loading = ref(false);
 
 const formRef = ref(null);
@@ -77,7 +75,7 @@ const onSubmit = (formEl) => {
     loginAPI(form.username, form.password).then(res => {
       useNotification("登录成功", "success");
       // 保存token
-      useSetToken(res.token);
+      setToken(res.token);
       router.push("/");
     }).finally(() => {
       loading.value = false;

@@ -1,10 +1,10 @@
-import { useGetToken } from "@/hooks/auth.js";
-import { useNotification } from "@/hooks/notification.js";
+import { getToken } from "@/untils/auth.js";
+import { useNotification } from "@/composables/encapsulation.js";
 import router from "@/router/index.js";
 import store from "./store";
 
 router.beforeEach(async (to, from, next) => {
-	const token = useGetToken();
+	const token = getToken();
 	// 没有登录
 	if (!token && to.path !== "/login") {
 		useNotification("请先登录", "error");
@@ -19,5 +19,8 @@ router.beforeEach(async (to, from, next) => {
 	if (token) {
 		await store.dispatch("getinfo");
 	}
+	// 设置页面标题
+	let title = to.meta.title ? to.meta.title : "超市后台管理";
+	document.title = title;
 	next();
 });

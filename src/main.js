@@ -4,7 +4,7 @@ import "element-plus/dist/index.css";
 import "virtual:windi.css";
 import router from "./router";
 import store from "@/store/index.js";
-import './permission.js'
+import "./permission.js";
 import App from "./App.vue";
 
 const app = createApp(App);
