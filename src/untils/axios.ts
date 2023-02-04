@@ -1,18 +1,20 @@
 import axios from "axios";
 import { useNotification } from "@/composables/encapsulation.js";
-import { useCookies } from "@vueuse/integrations/useCookies";
+import { getToken } from "./token";
 
 // 处理  类型“AxiosResponse<any, any>”上不存在属性“errorinfo”。ts(2339) 脑壳疼！关键一步。
 declare module "axios" {
 	interface AxiosResponse<T = any> {
 		token: string;
+		code: number;
+		msg: string;
 		// 这里追加你的参数
 	}
 	export function create(config?: AxiosRequestConfig): AxiosInstance;
 }
 
 const service = axios.create({
-	baseURL: "/base",
+	baseURL: "/base", // 配置在vite.config.ts中
 	timeout: 20000,
 });
 
@@ -20,11 +22,9 @@ const service = axios.create({
 service.interceptors.request.use(
 	function (config) {
 		// 在发送请求之前做些什么
-		// 添加请求头
-		const cookie = useCookies();
-		const token = cookie.get("admin-token");
+		const token = getToken();
 		if (token) {
-			config.headers["token"] = token;
+			config.headers.Authorization = token;
 		}
 		return config;
 	},
@@ -38,7 +38,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
 	function (response) {
 		// 对响应数据做点什么
-		return response.data.data;
+		return response.data;
 	},
 	function (error) {
 		// 对响应错误做点什么

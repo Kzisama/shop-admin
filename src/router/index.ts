@@ -7,6 +7,12 @@ const routes: RouteRecordRaw[] = [
 		meta: {
 			title: "后台首页",
 		},
+		children: [
+			{
+				path: "",
+				component: () => import("@/pages/layout/views/HomePage.vue"),
+			},
+		],
 	},
 	{
 		path: "/login",

@@ -15,7 +15,11 @@
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["src/*"]
-		}
+		},
+		// 解决vue-ts项目中元素类名出错（原因:识别成了React的tsx,）
+		"types": [
+			"vite/client" // if using vite
+		]
 	},
 	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
 	"references": [{ "path": "./tsconfig.node.json" }]

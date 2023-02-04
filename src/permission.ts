@@ -1,9 +1,10 @@
 import { useNotification } from "@/composables/encapsulation.js";
 import router from "@/router/index.js";
-import { getToken } from "@/untils/auth.js";
-import store from "./store";
+import { getToken } from "@/untils/token";
+import { userStore } from "@/store/userStore";
 
 router.beforeEach(async (to, from, next) => {
+	const user = userStore();
 	const token = getToken();
 	// 没有登录
 	if (!token && to.path !== "/login") {
@@ -17,7 +18,7 @@ router.beforeEach(async (to, from, next) => {
 	}
 	// 如果登录，自动获取用户信息并保存数据到vuex中
 	if (token) {
-		await store.dispatch("getinfo");
+		user.setUserInfo();
 	}
 	// 设置页面标题
 	document.title = (to.meta.title as string)

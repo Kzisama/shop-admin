@@ -3,12 +3,14 @@ import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import "virtual:windi.css";
 import router from "./router";
-import store from "@/store/index.js";
+import { createPinia } from "pinia";
 import "./permission.js";
 import App from "./App.vue";
 
+const pinia = createPinia();
 const app = createApp(App);
+
+app.use(pinia);
 app.use(router);
-app.use(store);
 app.use(ElementPlus);
 app.mount("#app");
