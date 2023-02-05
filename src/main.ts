@@ -4,7 +4,7 @@ import "element-plus/dist/index.css";
 import "virtual:windi.css";
 import router from "./router";
 import { createPinia } from "pinia";
-import "./permission.js";
+import "./router/permission.js";
 import App from "./App.vue";
 
 const pinia = createPinia();

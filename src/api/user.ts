@@ -12,3 +12,14 @@ export const loginAPI = (form: { username: string; password: string }) => {
 export const getUserInfoAPI = () => {
 	return axios.get("/user/info");
 };
+
+// 修改密码---个人
+export const updatePasswordAPI = (form: {
+	oldpassword: string;
+	password: string;
+	repassword: string;
+}) => {
+	return axios.post("/user/updatepassword", {
+		...form,
+	});
+};
