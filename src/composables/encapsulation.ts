@@ -1,4 +1,4 @@
-// 二次封装element组件
+// 二次封装element组件-----函数触发
 import { ElNotification, ElMessageBox } from "element-plus";
 
 export const useNotification = (message: string, type: any, title: string) => {

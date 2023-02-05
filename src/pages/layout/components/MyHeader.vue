@@ -1,11 +1,13 @@
 <template>
   <div class="my-header">
+    <!-- logo -->
     <span class="logo">
       <el-icon class="mr-2">
         <Shop />
       </el-icon>
       超市管理系统
     </span>
+    <!-- 功能按钮 -->
     <el-icon class="icon-btn">
       <Fold />
     </el-icon>
@@ -32,13 +34,13 @@
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item @click="showDrawer = true">修改密码</el-dropdown-item>
+            <el-dropdown-item @click="formDrawerRef.open()">修改密码</el-dropdown-item>
             <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
     </div>
-    <el-drawer v-model="showDrawer" title="修改密码" size="45%" :close-on-click-modal="false">
+    <FormDrawer ref="formDrawerRef" title="修改密码" destroy-on-close @submit="onSubmit(formRef)">
       <el-form ref="formRef" :rules="rules" :model="form">
         <el-form-item prop="oldpassword">
           <el-input v-model="form.oldpassword" type="password" show-password placeholder="原密码"></el-input>
@@ -49,99 +51,121 @@
         <el-form-item prop="repassword">
           <el-input v-model="form.repassword" type="password" show-password placeholder="确认新密码"></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-button color="#626aef" @click="onSubmit(formRef)">
-            提 交
-          </el-button>
-        </el-form-item>
       </el-form>
-    </el-drawer>
+    </FormDrawer>
   </div>
 </template>
 
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { Shop, Fold, Refresh, FullScreen, ArrowDown, Aim } from "@element-plus/icons-vue";
+import {
+  Shop,
+  Fold,
+  Refresh,
+  FullScreen,
+  ArrowDown,
+  Aim,
+} from "@element-plus/icons-vue";
 import type { FormInstance, FormRules } from "element-plus";
-import { userStore } from '@/store/userStore';
+import { userStore } from "@/store/userStore";
 import { useElMessageBox, useNotification } from "@/composables/encapsulation";
 import { removeToken } from "@/untils/token";
-import { useFullscreen } from '@vueuse/core';
-import { updatePasswordAPI } from '@/api/user';
+import { useFullscreen } from "@vueuse/core";
+import { updatePasswordAPI } from "@/api/user";
+import FormDrawer from "@/components/FormDrawer.vue";
 
-const { isFullscreen/* 全屏状态,默认false */, toggle/* 切换全屏 */ } = useFullscreen();
+const { isFullscreen /* 全屏状态,默认false */, toggle /* 切换全屏 */ } =
+  useFullscreen();
 const router = useRouter();
 const user = userStore();
 
-const showDrawer = ref<boolean>(false); // 修改密码drawer的展示状态
-
-// 退出登录
+// 退出登录---按钮
 const logout = () => {
   // ElMessageBox 返回的是一个promise对象
-  useElMessageBox("是否要退出登录", "退出登录", "warning").then((res) => {
-    removeToken();
-    useNotification("退出登录成功", "success", "");
-    router.replace("/login");
-  }).catch(err => {
-    console.log("取消");
-  });
+  useElMessageBox("是否要退出登录", "退出登录", "warning")
+    .then((res) => {
+      removeToken();
+      useNotification("退出登录成功", "success", "");
+      router.replace("/login");
+    })
+    .catch((err) => {
+      console.log("取消");
+    });
 };
-
 // 刷新
-const handleRefresh = () => { location.reload(); };
-
+const handleRefresh = () => {
+  location.reload();
+};
 // 修改密码
-const formRef = ref<FormInstance>();
-const form = reactive({ // 表单
-  oldpassword: "",
-  password: "",
-  repassword: "",
-});
-const pwdReg: RegExp = /^[a-zA-Z0-9_]{6,16}$/; // 密码正则,6~16位（数字、字母、下划线）
-const validatePass = (rule: any, value: any, callback: any) => { // 自定义验证--新密码
-  if (!value) {
-    return callback(new Error("请输入新密码"));
-  } else if (!pwdReg.test(value)) {
-    return callback(new Error("密码由6~16位数字、字母、下划线组成"));
-  } else {
-    if (value === form.oldpassword) {
-      return callback(new Error('新密码不能和原密码一致'));
-    }
-  }
-  callback();
-};
-const validatePass2 = (rule: any, value: any, callback: any) => { // 自定义验证-确认密码
-  if (value === "") {
-    return callback(new Error("请再次输入密码"));
-  } else if (value !== form.password) {
-    return callback(new Error("两次密码不一致"));
-  } else {
-    callback();
-  }
-};
-const rules: FormRules = { // 验证规则
-  oldpassword: [{ required: true, message: "原密码不能为空", trigger: "blur" }],
-  password: [{ validator: validatePass, trigger: "blur" }],
-  repassword: [{ validator: validatePass2, trigger: "blur" }]
-};
-const onSubmit = (formEl: FormInstance | undefined) => { // 更新密码
-  if (!formEl) return;
-  formEl.validate(async valid => {
-    if (valid) {
-      const res = await updatePasswordAPI(form);
-      const type = res.code !== 0 ? 'error' : 'success'; // 提示类型
-      useNotification(res.msg, type, '');
-      if (res.code === 0) {
-        removeToken();
-        router.replace('/login');
-      }
-    } else {
-      console.log("error submit!");
-      return false;
-    }
+const { formDrawerRef, formRef, form, rules, onSubmit } = rePassword();
+
+function rePassword() {
+  // 修改密码---按钮
+  const formDrawerRef = ref();
+  // 修改密码---提交表单
+  const formRef = ref<FormInstance>();
+  const form = reactive({
+    // 表单
+    oldpassword: "",
+    password: "",
+    repassword: "",
   });
-};
+  const pwdReg: RegExp = /^[a-zA-Z0-9_]{6,16}$/; // 密码正则,6~16位（数字、字母、下划线）
+  const validatePass = (rule: any, value: any, callback: any) => {
+    // 自定义验证--新密码
+    if (!value) {
+      return callback(new Error("请输入新密码"));
+    } else if (!pwdReg.test(value)) {
+      return callback(new Error("密码由6~16位数字、字母、下划线组成"));
+    } else {
+      if (value === form.oldpassword) {
+        return callback(new Error("新密码不能和原密码一致"));
+      }
+    }
+    callback();
+  };
+  const validatePass2 = (rule: any, value: any, callback: any) => {
+    // 自定义验证-确认密码
+    if (value === "") {
+      return callback(new Error("请再次输入密码"));
+    } else if (value !== form.password) {
+      return callback(new Error("两次密码不一致"));
+    } else {
+      callback();
+    }
+  };
+  const rules: FormRules = {
+    // 验证规则
+    oldpassword: [{ required: true, message: "原密码不能为空", trigger: "blur" }],
+    password: [{ validator: validatePass, trigger: "blur" }],
+    repassword: [{ validator: validatePass2, trigger: "blur" }],
+  };
+  const onSubmit = (formEl: FormInstance | undefined) => {
+    // 更新密码
+    if (!formEl) return;
+    formEl.validate(async (valid) => {
+      if (valid) {
+        formDrawerRef.value.load();
+        const res = await updatePasswordAPI(form);
+        formDrawerRef.value.unload();
+        const type = res.code !== 0 ? "error" : "success"; // 提示类型
+        useNotification(res.msg, type, "");
+        if (res.code === 0) {
+          removeToken();
+          router.replace("/login");
+        }
+      } else {
+        console.log("error submit!");
+        return false;
+      }
+    });
+  };
+
+  return {
+    formDrawerRef, formRef, form, rules, onSubmit
+  };
+}
 </script>
 
 <style scoped lang="less">
