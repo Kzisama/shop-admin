@@ -1,0 +1,186 @@
+[
+	{
+		"routeID": 1,
+		"pid": 0,
+		"path": "/",
+		"name": "Home",
+		"pname": "Home",
+		"title": "后台面板",
+		"icon": "Help"
+	},
+	{
+		"routeID": 2,
+		"pid": 1,
+		"path": "",
+		"name": "HomeIndex",
+		"pname": "Home",
+		"link": "/",
+		"title": "主控台",
+		"icon": "HomeFilled"
+	},
+	{
+		"routeID": 3,
+		"pid": 0,
+		"path": "/user",
+		"name": "User",
+		"pname": "User",
+		"title": "用户",
+		"icon": "User"
+	},
+	{
+		"routeID": 4,
+		"pid": 3,
+		"path": "self",
+		"name": "UserSelf",
+		"pname": "User",
+		"link": "/user/self",
+		"title": "个人信息",
+		"icon": "UserFilled"
+	},
+	{
+		"routeID": 5,
+		"pid": 3,
+		"path": "roles",
+		"name": "UserRoles",
+		"pname": "User",
+		"link": "/user/roles",
+		"title": "权限分配",
+		"icon": "Connection"
+	},
+	{
+		"routeID": 6,
+		"pid": 3,
+		"path": "create",
+		"name": "UserCreate",
+		"pname": "User",
+		"link": "/user/create",
+		"title": "新增用户",
+		"icon": "MagicStick"
+	},
+	{
+		"routeID": 7,
+		"pid": 0,
+		"path": "/goods",
+		"name": "Goods",
+		"pname": "Goods",
+		"title": "店铺",
+		"icon": "ShoppingBag"
+	},
+	{
+		"routeID": 8,
+		"pid": 7,
+		"path": "manage",
+		"name": "GoodsManage",
+		"pname": "Goods",
+		"link": "/goods/manage",
+		"title": "商品管理",
+		"icon": "ShoppingBag"
+	},
+	{
+		"routeID": 9,
+		"pid": 7,
+		"path": "kind",
+		"name": "GoodsKind",
+		"pname": "Goods",
+		"link": "/goods/kind",
+		"title": "商品分类",
+		"icon": "ShoppingBag"
+	},
+	{
+		"routeID": 10,
+		"pid": 7,
+		"path": "discount",
+		"name": "GoodsDiscount",
+		"pname": "Goods",
+		"link": "/goods/discount",
+		"title": "商品优惠",
+		"icon": "Discount"
+	},
+	{
+		"routeID": 11,
+		"pid": 0,
+		"path": "/order",
+		"name": "Order",
+		"pname": "Order",
+		"title": "订单",
+		"icon": "MessageBox"
+	},
+	{
+		"routeID": 12,
+		"pid": 11,
+		"path": "manage",
+		"name": "OrderManage",
+		"pname": "Order",
+		"link": "/order/manage",
+		"title": "订单管理",
+		"icon": "Reading"
+	},
+	{
+		"routeID": 13,
+		"pid": 0,
+		"path": "/delivery",
+		"name": "Delivery",
+		"pname": "Delivery",
+		"title": "派送",
+		"icon": "Van"
+	},
+	{
+		"routeID": 14,
+		"pid": 13,
+		"path": "people",
+		"name": "DeliveryPeople",
+		"pname": "Delivery",
+		"link": "/delivery/people",
+		"title": "派送人员",
+		"icon": "Avatar"
+	},
+	{
+		"routeID": 15,
+		"pid": 13,
+		"path": "price",
+		"name": "DeliveryPrice",
+		"pname": "Delivery",
+		"link": "/delivery/price",
+		"title": "派送价格",
+		"icon": "Coin"
+	},
+	{
+		"routeID": 16,
+		"pid": 13,
+		"path": "preview",
+		"name": "DeliveryPreview",
+		"pname": "Delivery",
+		"link": "/delivery/preview",
+		"title": "订单查看",
+		"icon": "View"
+	},
+	{
+		"routeID": 17,
+		"pid": 0,
+		"path": "/notice",
+		"name": "Notice",
+		"pname": "Notice",
+		"title": "通知",
+		"icon": "Bell"
+	},
+	{
+		"routeID": 18,
+		"pid": 17,
+		"path": "system",
+		"name": "NoticeSystem",
+		"pname": "Notice",
+		"link": "/notice/system",
+		"title": "系统通知",
+		"icon": "Notification"
+	},
+	{
+		"routeID": 19,
+		"pid": 17,
+		"path": "publish",
+		"name": "NoticePublish",
+		"pname": "Notice",
+		"link": "/notice/publish",
+		"title": "发布通知",
+		"icon": "EditPen"
+	}
+]

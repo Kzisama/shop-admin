@@ -11,7 +11,6 @@ export const userStore = defineStore("user", {
 	actions: {
 		setUserInfo() {
 			getUserInfoAPI().then((res) => {
-				console.log(res);
 				this.userInfo = res.data;
 			});
 		},

@@ -8,11 +8,12 @@
       超市管理系统
     </span>
     <!-- 功能按钮 -->
-    <el-icon class="icon-btn">
-      <Fold />
+    <el-icon class="icon-btn" @click="menu.foldFn()">
+      <Fold v-if="menu.isFold" />
+      <Expand v-else />
     </el-icon>
     <el-tooltip effect="dark" content="刷新" placement="bottom">
-      <el-icon class="icon-btn" @click="handleRefresh">
+      <el-icon class="icon-btn" @click="handleRefreshFn">
         <Refresh />
       </el-icon>
     </el-tooltip>
@@ -35,21 +36,25 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="formDrawerRef.open()">修改密码</el-dropdown-item>
-            <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
+            <el-dropdown-item @click="logoutFn">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
     </div>
+    <!-- 修改密码 -->
     <FormDrawer ref="formDrawerRef" title="修改密码" destroy-on-close @submit="onSubmit(formRef)">
       <el-form ref="formRef" :rules="rules" :model="form">
         <el-form-item prop="oldpassword">
-          <el-input v-model="form.oldpassword" type="password" show-password placeholder="原密码"></el-input>
+          <el-input v-model="form.oldpassword" type="password" show-password placeholder="原密码">
+          </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="form.password" type="password" show-password placeholder="新密码"></el-input>
+          <el-input v-model="form.password" type="password" show-password placeholder="新密码">
+          </el-input>
         </el-form-item>
         <el-form-item prop="repassword">
-          <el-input v-model="form.repassword" type="password" show-password placeholder="确认新密码"></el-input>
+          <el-input v-model="form.repassword" type="password" show-password placeholder="确认新密码">
+          </el-input>
         </el-form-item>
       </el-form>
     </FormDrawer>
@@ -59,48 +64,41 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import {
-  Shop,
-  Fold,
-  Refresh,
-  FullScreen,
-  ArrowDown,
-  Aim,
-} from "@element-plus/icons-vue";
 import type { FormInstance, FormRules } from "element-plus";
 import { userStore } from "@/store/userStore";
+import { menuStore } from '@/store/menuStore';
 import { useElMessageBox, useNotification } from "@/composables/encapsulation";
 import { removeToken } from "@/untils/token";
 import { useFullscreen } from "@vueuse/core";
 import { updatePasswordAPI } from "@/api/user";
 import FormDrawer from "@/components/FormDrawer.vue";
 
-const { isFullscreen /* 全屏状态,默认false */, toggle /* 切换全屏 */ } =
-  useFullscreen();
+const { isFullscreen /* 全屏状态,默认false */, toggle /* 切换全屏 */ } = useFullscreen();
 const router = useRouter();
 const user = userStore();
+const menu = menuStore();
 
-// 退出登录---按钮
-const logout = () => {
+// 退出登录
+const logoutFn = () => { handleLogout(); };
+// 刷新
+const handleRefreshFn = () => { location.reload(); };
+// 修改密码
+const { formDrawerRef, formRef, form, rules, onSubmit } = handlePassword();
+
+// 退出登录函数
+function handleLogout() {
   // ElMessageBox 返回的是一个promise对象
   useElMessageBox("是否要退出登录", "退出登录", "warning")
-    .then((res) => {
+    .then(res => {
       removeToken();
       useNotification("退出登录成功", "success", "");
+    }).then(res => {
       router.replace("/login");
-    })
-    .catch((err) => {
-      console.log("取消");
     });
-};
-// 刷新
-const handleRefresh = () => {
-  location.reload();
-};
-// 修改密码
-const { formDrawerRef, formRef, form, rules, onSubmit } = rePassword();
 
-function rePassword() {
+}
+// 修改密码函数
+function handlePassword() {
   // 修改密码---按钮
   const formDrawerRef = ref();
   // 修改密码---提交表单
@@ -137,7 +135,9 @@ function rePassword() {
   };
   const rules: FormRules = {
     // 验证规则
-    oldpassword: [{ required: true, message: "原密码不能为空", trigger: "blur" }],
+    oldpassword: [
+      { required: true, message: "原密码不能为空", trigger: "blur" },
+    ],
     password: [{ validator: validatePass, trigger: "blur" }],
     repassword: [{ validator: validatePass2, trigger: "blur" }],
   };
@@ -163,7 +163,11 @@ function rePassword() {
   };
 
   return {
-    formDrawerRef, formRef, form, rules, onSubmit
+    formDrawerRef,
+    formRef,
+    form,
+    rules,
+    onSubmit,
   };
 }
 </script>

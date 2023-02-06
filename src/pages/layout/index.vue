@@ -4,7 +4,7 @@
       <MyHeader></MyHeader>
     </el-header>
     <el-container>
-      <el-aside>
+      <el-aside class="aside" :style="{ width: menu.asideWidth }">
         <MyMenu></MyMenu>
       </el-aside>
       <el-main>
@@ -16,8 +16,16 @@
 </template>
 
 <script setup lang="ts">
+import { menuStore } from "@/store/menuStore";
 import MyHeader from "./components/MyHeader.vue";
 import MyMenu from "./components/MyMenu.vue";
 import MyTagList from "./components/MyTagList.vue";
 
+const menu = menuStore();
 </script>
+
+<style scoped lange="less">
+.aside {
+  transition: all .3s;
+}
+</style>

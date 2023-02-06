@@ -1,5 +1,5 @@
 <template>
-  <div>后台主页</div>
+  <div>DeliveryPeople</div>
 </template>
 
 <script setup lang="ts">
