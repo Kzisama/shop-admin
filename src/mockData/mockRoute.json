@@ -74,7 +74,7 @@
 		"pname": "Goods",
 		"link": "/goods/manage",
 		"title": "商品管理",
-		"icon": "ShoppingBag"
+		"icon": "ShoppingCartFull"
 	},
 	{
 		"routeID": 9,
@@ -84,7 +84,7 @@
 		"pname": "Goods",
 		"link": "/goods/kind",
 		"title": "商品分类",
-		"icon": "ShoppingBag"
+		"icon": "Grid"
 	},
 	{
 		"routeID": 10,

@@ -64,13 +64,13 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import { updatePasswordAPI, logoutAPI } from "@/api/user";
 import type { FormInstance, FormRules } from "element-plus";
 import { userStore } from "@/store/userStore";
 import { menuStore } from '@/store/menuStore';
 import { useElMessageBox, useNotification } from "@/composables/encapsulation";
 import { removeToken } from "@/untils/token";
 import { useFullscreen } from "@vueuse/core";
-import { updatePasswordAPI } from "@/api/user";
 import FormDrawer from "@/components/FormDrawer.vue";
 
 const { isFullscreen /* 全屏状态,默认false */, toggle /* 切换全屏 */ } = useFullscreen();
@@ -90,10 +90,16 @@ function handleLogout() {
   // ElMessageBox 返回的是一个promise对象
   useElMessageBox("是否要退出登录", "退出登录", "warning")
     .then(res => {
-      removeToken();
-      useNotification("退出登录成功", "success", "");
-    }).then(res => {
-      router.replace("/login");
+      logoutAPI().then((res) => {
+        console.log(res);
+        if (res.code === 0) {
+          removeToken();
+          useNotification("退出登录成功", "success", "");
+          router.replace("/login");
+        } else {
+          useNotification("退出登录失败", "error", "");
+        }
+      });
     });
 
 }

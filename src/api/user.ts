@@ -23,3 +23,8 @@ export const updatePasswordAPI = (form: {
 		...form,
 	});
 };
+
+// 退出登录
+export const logoutAPI = () => {
+	return axios.post("/user/logout");
+};
