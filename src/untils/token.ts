@@ -1,16 +1,15 @@
-import { useCookies } from "@vueuse/integrations/useCookies";
+// 操作 sessionStorage
 
 const TokenKey = "admin-token";
-const cookie = useCookies();
 // 设置token
-export const setToken = (token: string) => {
-	cookie.set(TokenKey, token);
+export const setToken = (token: string, name: string = TokenKey) => {
+	sessionStorage.setItem(name, token);
 };
 // 获取token
-export const getToken = () => {
-	return cookie.get(TokenKey);
+export const getToken = (name: string = TokenKey) => {
+	return sessionStorage.getItem(name);
 };
 // 删除token
-export const removeToken = () => {
-	cookie.remove(TokenKey);
+export const removeToken = (name: string = TokenKey) => {
+	sessionStorage.removeItem(name);
 };

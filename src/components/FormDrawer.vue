@@ -1,6 +1,6 @@
 <!-- 二次封装----Drawer抽屉组件 -->
 <template>
-  <el-drawer v-model="showDrawer" :title="title" :size="size" :close-on-click-modal="false"
+  <el-drawer class="drawer" v-model="showDrawer" :title="title" :size="size" :close-on-click-modal="false"
     :destroy-on-close="destroyOnClose">
     <div class="formDrawer">
       <div class="body">

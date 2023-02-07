@@ -68,7 +68,7 @@ import { updatePasswordAPI, logoutAPI } from "@/api/user";
 import type { FormInstance, FormRules } from "element-plus";
 import mainStore from "@/store";
 import { useElMessageBox, useNotification } from "@/composables/encapsulation";
-import { removeToken } from "@/untils/token";
+import { removeToken, getToken } from "@/untils/token";
 import { useFullscreen } from "@vueuse/core";
 import FormDrawer from "@/components/FormDrawer.vue";
 
@@ -87,22 +87,18 @@ const { formDrawerRef, formRef, form, rules, onSubmit } = handlePassword();
 
 
 // 退出登录函数
-function handleLogout() {
+async function handleLogout() {
   // ElMessageBox 返回的是一个promise对象
-  useElMessageBox("是否要退出登录", "退出登录", "warning")
-    .then(res => {
-      logoutAPI().then((res) => {
-        console.log(res);
-        if (res.code === 0) {
-          removeToken();
-          useNotification("退出登录成功", "success", "");
-          router.replace("/login");
-        } else {
-          useNotification("退出登录失败", "error", "");
-        }
-      });
-    });
-
+  await useElMessageBox("是否要退出登录", "退出登录", "warning");
+  const res = await logoutAPI();
+  if (res.code === 0) {
+    removeToken();
+    removeToken('tags');
+    useNotification("退出登录成功", "success", "");
+    router.replace("/login");
+  } else {
+    useNotification("退出登录失败", "error", "");
+  }
 }
 // 修改密码函数
 function handlePassword() {

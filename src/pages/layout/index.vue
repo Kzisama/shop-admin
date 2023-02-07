@@ -7,7 +7,7 @@
       <el-aside class="aside" :style="{ width: menu.asideWidth }">
         <MyMenu></MyMenu>
       </el-aside>
-      <el-main>
+      <el-main class="main">
         <MyTagList></MyTagList>
         <router-view></router-view>
       </el-main>
@@ -27,5 +27,9 @@ const menu = menuStore();
 <style scoped lange="less">
 .aside {
   transition: all .3s;
+}
+
+.main {
+  padding: 0;
 }
 </style>
