@@ -467,6 +467,11 @@
     "json-schema-traverse" "^0.4.1"
     "uri-js" "^4.2.2"
 
+"animate.css@^4.1.1":
+  "integrity" "sha512-+mRmCTv6SbCmtYJCN4faJMNFVNN5EuCTTprDTAo7YzIGji2KADmakjVA3+8mVDkZ2Bf09vayB35lSQIex2+QaQ=="
+  "resolved" "https://registry.npmmirror.com/animate.css/-/animate.css-4.1.1.tgz"
+  "version" "4.1.1"
+
 "async-validator@*", "async-validator@^4.2.5":
   "integrity" "sha512-7HhHjtERjqlNbZtqNqy2rckN/SpOOlmDliet+lP7k+eKZEjPk3DgyeU9lIXLdeLz0uBbbVp+9Qdow9wJWgwwfg=="
   "resolved" "https://registry.npmmirror.com/async-validator/-/async-validator-4.2.5.tgz"
@@ -993,7 +998,7 @@
   "resolved" "https://registry.npmmirror.com/normalize-wheel-es/-/normalize-wheel-es-1.2.0.tgz"
   "version" "1.2.0"
 
-"nprogress@*", "nprogress@^0.2.0":
+"nprogress@*":
   "integrity" "sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA=="
   "resolved" "https://registry.npmmirror.com/nprogress/-/nprogress-0.2.0.tgz"
   "version" "0.2.0"

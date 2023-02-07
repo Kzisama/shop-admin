@@ -3,6 +3,7 @@ import ElementPlus from "element-plus";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import "element-plus/dist/index.css";
 import "virtual:windi.css";
+import "animate.css";
 import router from "./router";
 import { createPinia } from "pinia";
 import "./router/permission.js";
