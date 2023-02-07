@@ -38,18 +38,7 @@ router.beforeEach(async (to, from, next) => {
 		// 解决了动态路由重复加载问题
 		if (menuRoute.routeTree.length === 0) {
 			const res = await getRouteAPI();
-			const { role, allRoutes } = res.data;
-			// 转换为number[]的路由数组
-			const rolesArr = role
-				.slice(1, -1)
-				.split(",")
-				.map((item: string) => parseInt(item));
-			// 用户拥有的路由
-			const userRoutes = (allRoutes as IRoute[]).filter((item) => {
-				return rolesArr.indexOf(item.routeID) !== -1;
-			});
-
-			const routeTree = dataToTree(userRoutes); // 将数据转换成树形结构
+			const routeTree = dataToTree(res.data.userRoutes); // 将用户路由转换成树形结构
 			menuRoute.setRouteTree(routeTree); // 将树形结构保存到pinia
 			const newRoutes = generateRoute(routeTree); // 树形结构转换成路由对象
 			newRoutes.forEach((route) => {
