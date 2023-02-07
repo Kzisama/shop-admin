@@ -28,3 +28,8 @@ export const updatePasswordAPI = (form: {
 export const logoutAPI = () => {
 	return axios.post("/user/logout");
 };
+
+// 获取用户路由
+export const getRouteAPI = () => {
+	return axios.get("/user/routes");
+};

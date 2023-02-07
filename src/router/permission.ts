@@ -4,9 +4,10 @@ import { getToken } from "@/untils/token";
 import { userStore } from "@/store/userStore";
 import { dataToTree, generateRoute } from "@/hooks";
 import { menuRouteStore } from "@/store/routeStore";
-import routesData from "@/mockData/mockRoute.json";
+import { getRouteAPI } from "@/api/user";
+import { IRoute } from "@/hooks";
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
 	const user = userStore();
 	const token = getToken();
 	const menuRoute = menuRouteStore();
@@ -36,8 +37,19 @@ router.beforeEach((to, from, next) => {
 		// 判断是否是刷新，如果刷新那么pinia中的数据会重新加载，此时routerTree长度为0
 		// 解决了动态路由重复加载问题
 		if (menuRoute.routeTree.length === 0) {
-			// TODO:将routesData替换成真实接口提供的数据
-			const routeTree = dataToTree(routesData); // 将数据转换成树形结构
+			const res = await getRouteAPI();
+			const { role, allRoutes } = res.data;
+			// 转换为number[]的路由数组
+			const rolesArr = role
+				.slice(1, -1)
+				.split(",")
+				.map((item: string) => parseInt(item));
+			// 用户拥有的路由
+			const userRoutes = (allRoutes as IRoute[]).filter((item) => {
+				return rolesArr.indexOf(item.routeID) !== -1;
+			});
+
+			const routeTree = dataToTree(userRoutes); // 将数据转换成树形结构
 			menuRoute.setRouteTree(routeTree); // 将树形结构保存到pinia
 			const newRoutes = generateRoute(routeTree); // 树形结构转换成路由对象
 			newRoutes.forEach((route) => {
