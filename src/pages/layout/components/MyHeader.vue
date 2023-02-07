@@ -66,8 +66,7 @@ import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { updatePasswordAPI, logoutAPI } from "@/api/user";
 import type { FormInstance, FormRules } from "element-plus";
-import { userStore } from "@/store/userStore";
-import { menuStore } from '@/store/menuStore';
+import mainStore from "@/store";
 import { useElMessageBox, useNotification } from "@/composables/encapsulation";
 import { removeToken } from "@/untils/token";
 import { useFullscreen } from "@vueuse/core";
@@ -75,8 +74,8 @@ import FormDrawer from "@/components/FormDrawer.vue";
 
 const { isFullscreen /* 全屏状态,默认false */, toggle /* 切换全屏 */ } = useFullscreen();
 const router = useRouter();
-const user = userStore();
-const menu = menuStore();
+
+const { user, menu } = mainStore();
 
 // 退出登录
 const logoutFn = () => { handleLogout(); };

@@ -32,16 +32,14 @@
 
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router';
-import { menuStore } from '@/store/menuStore';
-import { menuRouteStore } from '@/store/routeStore';
+import mainStore from '@/store';
 
 const router = useRouter();
 const route = useRoute();
-const menu = menuStore();
-const menuRoutes = menuRouteStore();
+const { menu, menuRoute } = mainStore();
 
 // 树形结构
-const asideMenu = menuRoutes.routeTree;
+const asideMenu = menuRoute.routeTree;
 
 // 路由跳转
 const selectFn = (path: string) => {

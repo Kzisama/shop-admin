@@ -1,16 +1,14 @@
 import { useNotification } from "@/composables/encapsulation.js";
 import router from "@/router/index.js";
 import { getToken } from "@/untils/token";
-import { userStore } from "@/store/userStore";
+import mainStore from "@/store";
 import { dataToTree, generateRoute } from "@/hooks";
-import { menuRouteStore } from "@/store/routeStore";
 import { getRouteAPI } from "@/api/user";
-import { IRoute } from "@/hooks";
 
 router.beforeEach(async (to, from, next) => {
-	const user = userStore();
 	const token = getToken();
-	const menuRoute = menuRouteStore();
+
+	const { user, menuRoute } = mainStore();
 
 	// 设置页面标题
 	document.title = (to.meta.title as string)
