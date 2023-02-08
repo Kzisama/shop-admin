@@ -24,6 +24,11 @@ router.beforeEach(async (to, from, next) => {
 		return next({ path: from.path ? from.path : "/" });
 	}
 
+	// 退出登录,用于切换用户的时候及时获取相应路由,防止使用其他权限的路由
+	if (to.path === "/login") {
+		hasGetInfo = false;
+	}
+
 	// 记录是否有路由动态生成
 	let hasRouteAdd = false;
 	if (token && !hasGetInfo) {

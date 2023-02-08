@@ -23,6 +23,7 @@
       </el-dropdown>
     </span>
   </div>
+  <div style="height: 44px;"></div>
 </template>
 
 <script setup lang="ts">
@@ -120,6 +121,9 @@ function handleTags() {
 
 <style scoped lang="less">
 .my-tag-list {
+  position: fixed;
+  top: 64px;
+  right: 0;
   height: 44px;
   @apply flex items-center bg-gray-100 px-2 rounded;
 

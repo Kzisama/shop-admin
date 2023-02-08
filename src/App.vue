@@ -5,6 +5,8 @@
 <script setup lang="ts">
 </script>
 
-<style scoped lang="less">
-
+<style lang="less">
+body {
+  @apply bg-gray-100;
+}
 </style>

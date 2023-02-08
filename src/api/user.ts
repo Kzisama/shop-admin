@@ -8,6 +8,23 @@ export const loginAPI = (form: { username: string; password: string }) => {
 	});
 };
 
+// 退出登录
+export const logoutAPI = () => {
+	return axios.post("/user/logout");
+};
+
+// 创建用户
+export const createAPI = (form: {
+	username: string;
+	password: string;
+	character: string;
+	nickname: string;
+	tel: string;
+	email: string;
+}) => {
+	return axios.post("/user/create", form);
+};
+
 // 获取用户信息
 export const getUserInfoAPI = () => {
 	return axios.get("/user/info");
@@ -19,14 +36,7 @@ export const updatePasswordAPI = (form: {
 	password: string;
 	repassword: string;
 }) => {
-	return axios.post("/user/updatepassword", {
-		...form,
-	});
-};
-
-// 退出登录
-export const logoutAPI = () => {
-	return axios.post("/user/logout");
+	return axios.post("/user/updatepassword", form);
 };
 
 // 获取用户路由

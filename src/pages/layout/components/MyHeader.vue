@@ -17,7 +17,7 @@
         <Refresh />
       </el-icon>
     </el-tooltip>
-    <!-- 右侧用户头像 & 退出操作 -->
+    <!-- 右侧用户名称 & 退出操作 -->
     <div class="ml-auto mr-6 flex items-center">
       <el-tooltip effect="dark" :content="!isFullscreen ? '全屏' : '退出全屏'" placement="bottom">
         <el-icon class="icon-btn" @click="toggle">
@@ -27,8 +27,7 @@
       </el-tooltip>
       <el-dropdown class="dropdown">
         <span class="flex items-center text-light-50">
-          <el-avatar class="mr-2" :size="30" :src="user.userInfo.avatar" />
-          {{ user.userInfo.username }}
+          {{ user.userInfo.nickname ? user.userInfo.nickname : user.userInfo.username }}
           <el-icon class="el-icon--right">
             <ArrowDown />
           </el-icon>
@@ -68,7 +67,7 @@ import { updatePasswordAPI, logoutAPI } from "@/api/user";
 import type { FormInstance, FormRules } from "element-plus";
 import mainStore from "@/store";
 import { useElMessageBox, useNotification } from "@/composables/encapsulation";
-import { removeToken, getToken } from "@/untils/token";
+import { removeToken } from "@/untils/token";
 import { useFullscreen } from "@vueuse/core";
 import FormDrawer from "@/components/FormDrawer.vue";
 
@@ -178,6 +177,7 @@ function handlePassword() {
 <style scoped lang="less">
 .my-header {
   height: 64px;
+  z-index: 10;
   @apply flex items-center bg-indigo-700 text-light-50 fixed top-0 left-0 right-0;
 
   .logo {
@@ -199,7 +199,7 @@ function handlePassword() {
   .dropdown {
     height: 64px;
     cursor: pointer;
-    @apply flex items-center;
+    @apply flex items-center ml-4;
   }
 }
 </style>

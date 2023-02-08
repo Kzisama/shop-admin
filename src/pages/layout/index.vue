@@ -9,7 +9,9 @@
       </el-aside>
       <el-main class="main">
         <MyTagList></MyTagList>
-        <router-view></router-view>
+        <div class='main-contain'>
+          <router-view></router-view>
+        </div>
       </el-main>
     </el-container>
   </el-container>
@@ -31,5 +33,11 @@ const menu = menuStore();
 
 .main {
   padding: 0;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.main-contain {
+  padding: 12px;
 }
 </style>

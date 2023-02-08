@@ -1,5 +1,5 @@
 <template>
-  <div>UserSelf</div>
+  <div>用户总览</div>
 </template>
 
 <script setup lang="ts">

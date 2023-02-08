@@ -18,7 +18,7 @@
           <el-input v-model="form.username" placeholder="请输入用户名">
             <template #prefix>
               <el-icon class="el-input__icon">
-                <user />
+                <User />
               </el-icon>
             </template>
           </el-input>
@@ -27,7 +27,7 @@
           <el-input v-model="form.password" type="password" show-password placeholder="请输入密码">
             <template #prefix>
               <el-icon class="el-input__icon">
-                <lock />
+                <Lock />
               </el-icon>
             </template>
           </el-input>
@@ -49,8 +49,9 @@ import { useNotification } from "@/composables/encapsulation";
 import { loginAPI } from "@/api/user.js";
 import { Lock, User } from "@element-plus/icons-vue";
 import { ElButton, ElCol, ElForm, ElFormItem, ElIcon, ElInput, ElRow, FormInstance, FormRules } from "element-plus";
+import mainStore from "@/store";
 
-
+const { user } = mainStore();
 const router = useRouter();
 
 // 提交登录
@@ -71,7 +72,7 @@ function handleLogin() {
   // 验证规则
   const rules: FormRules = {
     username: [{ required: true, message: "用户名不能为空", trigger: "blur" }],
-    password: [{ required: true, message: "用户名不能为空", trigger: "blur" }]
+    password: [{ required: true, message: "密码不能为空", trigger: "blur" }]
   };
   // 提交
   const onSubmit = (formEl: FormInstance | undefined) => {
