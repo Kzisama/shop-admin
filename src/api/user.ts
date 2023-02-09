@@ -30,6 +30,15 @@ export const getUserInfoAPI = () => {
 	return axios.get("/user/info");
 };
 
+// 修改用户信息
+export const updateUserInfoAPI = (form: {
+	nickname: string | null;
+	tel: string | null;
+	email: string | null;
+}) => {
+	return axios.post("/user/update", form);
+};
+
 // 修改密码---个人
 export const updatePasswordAPI = (form: {
 	oldpassword: string;

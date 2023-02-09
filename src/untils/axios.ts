@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useNotification } from "@/composables/encapsulation.js";
 import { getToken } from "./token";
+import { start, close } from "@/composables/nprogress";
 
 // 处理  类型“AxiosResponse<any, any>”上不存在属性“errorinfo”。ts(2339) 脑壳疼！关键一步。
 declare module "axios" {
@@ -21,6 +22,7 @@ const service = axios.create({
 // 添加请求拦截器
 service.interceptors.request.use(
 	function (config) {
+		start(); // 进度条
 		// 在发送请求之前做些什么
 		const token = getToken();
 		if (token) {
@@ -37,6 +39,7 @@ service.interceptors.request.use(
 // 添加响应拦截器
 service.interceptors.response.use(
 	function (response) {
+		close(); // 关闭进度条
 		// 对响应数据做点什么
 		return response.data;
 	},

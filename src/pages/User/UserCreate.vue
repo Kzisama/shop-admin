@@ -9,7 +9,7 @@
     <el-col :span="14" class="right">
       <div>
         <span class="h-[1px] w-30 bg-gray-200"></span>
-        <span>创建新用户</span>
+        <span>添加新用户</span>
         <span class="h-[1px] w-30 bg-gray-200"></span>
       </div>
       <el-form ref="formRef" :rules="rules" :model="createForm" style="width: 60%;">
@@ -33,9 +33,9 @@
         <el-form-item prop="email">
           <el-input v-model="createForm.email" placeholder="邮箱" />
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" style="width:49%" @click="onSubmit(formRef)">确定创建</el-button>
-          <el-button style="width:48%" @click="resetForm(formRef)">重置</el-button>
+        <el-form-item class="flex justify-between">
+          <el-button type="primary" @click="onSubmit(formRef)" class="flex-1">确定创建</el-button>
+          <el-button @click="resetForm(formRef)" class="flex-1">重置</el-button>
         </el-form-item>
       </el-form>
     </el-col>

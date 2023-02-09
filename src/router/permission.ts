@@ -4,10 +4,13 @@ import { getToken } from "@/untils/token";
 import mainStore from "@/store";
 import { dataToTree, generateRoute } from "@/hooks";
 import { getRouteAPI } from "@/api/user";
+import { start, close } from "@/composables/nprogress";
 
 let hasGetInfo = false; // 是否获取过用户数据
 
 router.beforeEach(async (to, from, next) => {
+	start(); // 进度条
+
 	const token = getToken();
 
 	const { user, menuRoute } = mainStore();
@@ -54,4 +57,9 @@ router.beforeEach(async (to, from, next) => {
 
 	// 动态路由需要手动调用router.push或router.replace
 	hasRouteAdd ? next({ path: to.fullPath }) : next();
+});
+
+// 路由加载结束后执行
+router.afterEach(() => {
+	close(); // 此处结束进度条
 });

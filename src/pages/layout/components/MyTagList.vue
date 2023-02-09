@@ -125,6 +125,7 @@ function handleTags() {
   top: 64px;
   right: 0;
   height: 44px;
+  z-index: 1;
   @apply flex items-center bg-gray-100 px-2 rounded;
 
   .tag-btn {
