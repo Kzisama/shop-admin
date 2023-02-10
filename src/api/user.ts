@@ -52,3 +52,8 @@ export const updatePasswordAPI = (form: {
 export const getRouteAPI = () => {
 	return axios.get("/user/routes");
 };
+
+// 修改用户头像
+export const updateAvatarAPI = (arg: FormData) => {
+	return axios.post("/user/avatar", arg);
+};

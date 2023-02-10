@@ -2,8 +2,15 @@
   <el-row class="create-container">
     <el-col :span="6" :offset="2" class="left">
       <div>
-        <div class="welcome">新增用户</div>
-        <div class="text">超级管理员特有权限</div>
+        <el-avatar class="avatar" :size="100" :src="avatarPic" @click="avatar.click()">
+          <span class="describe">
+            <el-icon>
+              <CirclePlus />
+            </el-icon>
+            点击修改头像
+          </span>
+        </el-avatar>
+        <input type="file" hidden ref="avatar" @change="selectFn">
       </div>
     </el-col>
     <el-col :span="14" class="right">
@@ -44,7 +51,7 @@
 import { reactive, ref, computed } from 'vue';
 import { FormInstance, FormRules } from 'element-plus';
 import { useNotification } from '@/composables/encapsulation';
-import { updateUserInfoAPI } from '@/api/user';
+import { updateAvatarAPI, updateUserInfoAPI } from '@/api/user';
 import mainStore from '@/store';
 import { storeToRefs } from 'pinia';
 import moment from 'moment';
@@ -56,8 +63,36 @@ const createTime = computed(() => {
   return moment(userInfo.value.createtime).format("YYYY-MM-DD");
 });
 
+const { avatar, avatarPic, selectFn } = handleAvatar();
+
 const { formRef, createForm, rules, onSubmit } = handleCreate();
 
+// 修改用户头像函数
+function handleAvatar() {
+  const avatar = ref(); // 获取文件选择框
+  const avatarPic = ref<string | null>(userInfo.value.avatar); // 用户头像
+  // 选取文件
+  const selectFn = (e: any) => {
+    const fd = new FileReader();
+    fd.readAsDataURL(e.target.files[0]);
+    fd.onload = async () => {
+      avatarPic.value = fd.result as string;
+      const avatarFormDate = new FormData();
+      avatarFormDate.append('avatar', e.target.files[0]);
+      const res = await updateAvatarAPI(avatarFormDate);
+      if (res.code === 0) {
+        useNotification(res.msg, "success", "");
+        location.reload();
+      } else {
+        useNotification("修改头像失败", "error", "");
+      }
+    };
+  };
+
+  return {
+    avatar, avatarPic, selectFn
+  };
+}
 
 // 修改用户信息函数
 function handleCreate() {
@@ -113,9 +148,7 @@ function handleCreate() {
         formEl.resetFields(); // 重置表单
         return false;
       }
-      console.log(createForm);
       const res = await updateUserInfoAPI(createForm);
-      console.log(res);
       if (res.code === 0) {
         useNotification(res.msg, "success", "");
         location.reload();
@@ -137,12 +170,25 @@ function handleCreate() {
   min-height: 500px;
 
   .left {
-    background-color: #D9AFD9;
-    background-image: linear-gradient(0deg, #D9AFD9 0%, #97D9E1 100%);
-    @apply flex justify-center items-center;
+    background-color: #0093E9;
+    background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
 
-    .welcome {
-      @apply text-xl font-bold;
+    @apply flex justify-center;
+
+    .avatar {
+      margin-top: 40px;
+
+      &:hover {
+        .describe {
+          opacity: 1;
+          transition: all .2s;
+        }
+      }
+
+      .describe {
+        opacity: 0;
+        @apply flex justify-center items-center w-10/10 h-10/10 rounded-full bg-gray-500;
+      }
     }
   }
 

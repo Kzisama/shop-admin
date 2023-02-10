@@ -25,6 +25,7 @@
           <Aim v-else />
         </el-icon>
       </el-tooltip>
+      <el-avatar :size="30" :src="user.userInfo.avatar" />
       <el-dropdown class="dropdown">
         <span class="flex items-center text-light-50">
           {{ user.userInfo.nickname ? user.userInfo.nickname : user.userInfo.username }}
@@ -199,7 +200,7 @@ function handlePassword() {
   .dropdown {
     height: 64px;
     cursor: pointer;
-    @apply flex items-center ml-4;
+    @apply flex items-center ml-2;
   }
 }
 </style>
