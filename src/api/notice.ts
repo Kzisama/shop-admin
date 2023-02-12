@@ -7,3 +7,7 @@ export const pubNoticeAPI = (form: { title: string; content: string }) => {
 export const getNoticeAPI = () => {
 	return axios.get("/notice/getnotice");
 };
+
+export const delNoticeAPI = (noticeID: number) => {
+	return axios.put("/notice/delnotice", { noticeID });
+};

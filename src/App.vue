@@ -1,5 +1,7 @@
 <template>
-  <router-view></router-view>
+  <el-scrollbar style="height: 100vh;">
+    <router-view></router-view>
+  </el-scrollbar>
 </template>
 
 <script setup lang="ts">

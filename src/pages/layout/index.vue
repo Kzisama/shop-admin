@@ -9,9 +9,8 @@
       </el-aside>
       <el-main class="main">
         <MyTagList></MyTagList>
-        <div class='main-contain'>
-          <router-view></router-view>
-        </div>
+        <div class='main-contain'></div>
+        <router-view></router-view>
       </el-main>
     </el-container>
   </el-container>
