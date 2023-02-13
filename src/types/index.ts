@@ -1,5 +1,5 @@
 export interface UserInfo {
-	id: number;
+	userID: number;
 	username: string;
 	avatar: string | null;
 	character: string;
@@ -8,4 +8,5 @@ export interface UserInfo {
 	nickname: string | null;
 	tel: string | null;
 	email: string | null;
+	status: number;
 }

@@ -30,6 +30,11 @@ export const getUserInfoAPI = () => {
 	return axios.get("/user/info");
 };
 
+// 获取全部用户信息
+export const getUserInfoAllAPI = () => {
+	return axios.get("/user/allinfo");
+};
+
 // 修改用户信息
 export const updateUserInfoAPI = (form: {
 	nickname: string | null;

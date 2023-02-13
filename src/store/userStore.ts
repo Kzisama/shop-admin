@@ -13,7 +13,10 @@ export const userStore = defineStore("user", {
 	actions: {
 		setUserInfo() {
 			getUserInfoAPI().then((res) => {
-				const user = { ...res.data, avatar: SERVER_URL + res.data.avatar };
+				const user = {
+					...res.data,
+					avatar: SERVER_URL + res.data.avatar,
+				};
 				this.userInfo = user;
 			});
 		},

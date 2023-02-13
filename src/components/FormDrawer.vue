@@ -1,10 +1,12 @@
 <!-- 二次封装----Drawer抽屉组件 -->
 <template>
-  <el-drawer class="drawer" v-model="showDrawer" :title="title" :size="size" :close-on-click-modal="false"
+  <el-drawer class="draw  er" v-model="showDrawer" :title="title" :size="size" :close-on-click-modal="false"
     :destroy-on-close="destroyOnClose">
     <div class="formDrawer">
       <div class="body">
-        <slot></slot>
+        <el-scrollbar>
+          <slot></slot>
+        </el-scrollbar>
       </div>
       <div class="actions">
         <el-button type="primary" @click="submit" :loading="isLoading">{{ confimText }}</el-button>
