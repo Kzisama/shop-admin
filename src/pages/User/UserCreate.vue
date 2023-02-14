@@ -33,9 +33,9 @@
           <el-select v-model="createForm.character" placeholder="分配职位">
             <el-option
               v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              :key="item.id"
+              :label="item.character"
+              :value="item.character"
             />
           </el-select>
         </el-form-item>
@@ -60,10 +60,11 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { FormInstance, FormRules } from "element-plus";
 import { useNotification } from "@/composables/encapsulation";
-import { createAPI } from "@/api/user";
+import { createAPI, getRoleAPI } from "@/api/user";
+import { Role } from "@/types";
 
 const { formRef, createForm, options, rules, onSubmit, resetForm } =
   handleCreate();
@@ -83,16 +84,12 @@ function handleCreate() {
   });
 
   // 下拉菜单选项
-  const options = [
-    {
-      value: "管理员",
-      label: "管理员",
-    },
-    {
-      value: "销售",
-      label: "销售",
-    },
-  ];
+  const options = ref<Role[]>([]);
+
+  onMounted(async () => {
+    const res = await getRoleAPI();
+    options.value = res.data;
+  });
 
   const uname_pwdReg: RegExp = /^[a-zA-Z0-9_]{6,16}$/; // 用户名,密码正则,6~16位（数字、字母、下划线）
   const telReg: RegExp = /0?(13|14|15|18)[0-9]{9}/; // 手机号正则
@@ -110,7 +107,6 @@ function handleCreate() {
     }
     callback();
   };
-
   const validateNickname = (rule: any, value: any, callback: any) => {
     // 自定义验证--用户昵称
     if (value && value.length < 4) {
@@ -118,7 +114,6 @@ function handleCreate() {
     }
     callback();
   };
-
   const validateTel = (rule: any, value: any, callback: any) => {
     // 自定义验证--手机号
     if (value && !telReg.test(value)) {
@@ -126,7 +121,6 @@ function handleCreate() {
     }
     callback();
   };
-
   const validateEmail = (rule: any, value: any, callback: any) => {
     // 自定义验证--邮箱
     if (value && !emailReg.test(value)) {
@@ -154,12 +148,11 @@ function handleCreate() {
         useNotification("请填写正确信息", "warning", "");
         return false;
       }
-      console.log(createForm);
-      // 重置表单
       const res = await createAPI(createForm);
-      console.log(res);
       if (res.code === 0) {
         useNotification(res.msg, "success", "");
+        // 重置表单
+        formEl.resetFields();
       } else {
         useNotification("创建用户失败", "error", "");
       }
