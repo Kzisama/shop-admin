@@ -12,16 +12,31 @@
         <span>添加新用户</span>
         <span class="h-[1px] w-30 bg-gray-200"></span>
       </div>
-      <el-form ref="formRef" :rules="rules" :model="createForm" style="width: 60%;">
+      <el-form
+        ref="formRef"
+        :rules="rules"
+        :model="createForm"
+        style="width: 60%"
+      >
         <el-form-item prop="username">
           <el-input v-model="createForm.username" placeholder="用户名" />
         </el-form-item>
         <el-form-item prop="password">
-          <el-input type="password" show-password v-model="createForm.password" placeholder="密码" />
+          <el-input
+            type="password"
+            show-password
+            v-model="createForm.password"
+            placeholder="密码"
+          />
         </el-form-item>
         <el-form-item prop="character">
           <el-select v-model="createForm.character" placeholder="分配职位">
-            <el-option v-for=" item in options" :key="item.value" :label="item.label" :value="item.value" />
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
           </el-select>
         </el-form-item>
         <el-form-item prop="nickname">
@@ -34,7 +49,9 @@
           <el-input v-model="createForm.email" placeholder="邮箱" />
         </el-form-item>
         <el-form-item class="flex justify-between">
-          <el-button type="primary" @click="onSubmit(formRef)" class="flex-1">确定创建</el-button>
+          <el-button type="primary" @click="onSubmit(formRef)" class="flex-1"
+            >确定创建</el-button
+          >
           <el-button @click="resetForm(formRef)" class="flex-1">重置</el-button>
         </el-form-item>
       </el-form>
@@ -43,13 +60,13 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
-import { FormInstance, FormRules } from 'element-plus';
-import { useNotification } from '@/composables/encapsulation';
-import { createAPI } from '@/api/user';
+import { reactive, ref } from "vue";
+import { FormInstance, FormRules } from "element-plus";
+import { useNotification } from "@/composables/encapsulation";
+import { createAPI } from "@/api/user";
 
-const { formRef, createForm, options, rules, onSubmit, resetForm } = handleCreate();
-
+const { formRef, createForm, options, rules, onSubmit, resetForm } =
+  handleCreate();
 
 // 创建新用户函数
 function handleCreate() {
@@ -57,29 +74,30 @@ function handleCreate() {
 
   // 表单属性
   const createForm = reactive({
-    username: '',
-    password: '',
-    character: '',
-    nickname: '',
-    tel: '',
-    email: ''
+    username: "",
+    password: "",
+    character: "",
+    nickname: "",
+    tel: "",
+    email: "",
   });
 
   // 下拉菜单选项
   const options = [
     {
-      value: '管理员',
-      label: '管理员',
+      value: "管理员",
+      label: "管理员",
     },
     {
-      value: '销售',
-      label: '销售',
+      value: "销售",
+      label: "销售",
     },
   ];
 
   const uname_pwdReg: RegExp = /^[a-zA-Z0-9_]{6,16}$/; // 用户名,密码正则,6~16位（数字、字母、下划线）
   const telReg: RegExp = /0?(13|14|15|18)[0-9]{9}/; // 手机号正则
-  const emailReg: RegExp = /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/; // 邮箱正则
+  const emailReg: RegExp =
+    /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/; // 邮箱正则
 
   // 自定义验证规则
   const validateUname_pwd = (rule: any, value: any, callback: any) => {
@@ -121,7 +139,9 @@ function handleCreate() {
   const rules: FormRules = {
     username: [{ validator: validateUname_pwd, trigger: "blur" }],
     password: [{ validator: validateUname_pwd, trigger: "blur" }],
-    character: [{ required: true, message: "用户职位不能为空", trigger: "blur" }],
+    character: [
+      { required: true, message: "用户职位不能为空", trigger: "blur" },
+    ],
     nickname: [{ validator: validateNickname, trigger: "blur" }],
     tel: [{ validator: validateTel, trigger: "blur" }],
     email: [{ validator: validateEmail, trigger: "blur" }],
@@ -129,7 +149,7 @@ function handleCreate() {
 
   const onSubmit = (formEl: FormInstance | undefined) => {
     if (!formEl) return;
-    formEl.validate(async valid => {
+    formEl.validate(async (valid) => {
       if (!valid) {
         useNotification("请填写正确信息", "warning", "");
         return false;
@@ -152,7 +172,12 @@ function handleCreate() {
   };
 
   return {
-    formRef, createForm, options, rules, onSubmit, resetForm
+    formRef,
+    createForm,
+    options,
+    rules,
+    onSubmit,
+    resetForm,
   };
 }
 </script>
@@ -172,7 +197,7 @@ function handleCreate() {
   .right {
     @apply flex flex-col justify-center items-center bg-light-50;
 
-    &>div {
+    & > div {
       @apply flex justify-center items-center space-x-2 my-5 text-gray-500;
     }
   }

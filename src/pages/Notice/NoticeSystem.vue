@@ -14,14 +14,33 @@
     </el-row>
     <!-- 表格主体 -->
     <el-row class="my-5">
-      <el-table v-loading="loading" :data="tableData" stripe style="width: 100%" height="480">
+      <el-table
+        v-loading="loading"
+        :data="tableData"
+        stripe
+        style="width: 100%"
+        height="480"
+      >
         <el-table-column prop="title" label="通知标题" />
-        <el-table-column prop="pubtime" label="发布时间" />
+        <el-table-column label="发布时间">
+          <template #default="scope">
+            <div style="display: flex; align-items: center">
+              <el-icon><timer /></el-icon>
+              <span style="margin-left: 10px">{{ scope.row.pubtime }}</span>
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column prop="publisher" label="发布者" />
         <el-table-column label="操作">
           <template #default="scope">
-            <el-button type="primary" @click="examine(scope.row)">查看</el-button>
-            <el-button type="danger" @click="del(scope.row)" v-if="user.userInfo.character === '超级管理员'">
+            <el-button type="primary" @click="examine(scope.row)">
+              查看
+            </el-button>
+            <el-button
+              type="danger"
+              @click="del(scope.row)"
+              v-if="user.userInfo.character === '超级管理员'"
+            >
               删除
             </el-button>
           </template>
@@ -68,7 +87,6 @@ const { formDrawerRef, noticeInfo, examine, sure } = handleExamine();
 // 删除通知
 const { del } = handleDelNotice();
 
-
 // 筛选通知函数
 function handleChoose() {
   const allNotice = ref<Notice[]>([]); // 全部通知
@@ -95,8 +113,11 @@ function handleChoose() {
         tableData.value = allNotice.value;
         break;
       case "today":
-        tableData.value = allNotice.value.filter(item => {
-          return moment(item.pubtime).format("YYYY-MM-DD") === moment().format("YYYY-MM-DD");
+        tableData.value = allNotice.value.filter((item) => {
+          return (
+            moment(item.pubtime).format("YYYY-MM-DD") ===
+            moment().format("YYYY-MM-DD")
+          );
         });
       default:
         break;
@@ -104,7 +125,9 @@ function handleChoose() {
   };
 
   return {
-    tableData, choose, loading
+    tableData,
+    choose,
+    loading,
   };
 }
 
@@ -125,14 +148,17 @@ function handleExamine() {
   };
 
   return {
-    formDrawerRef, noticeInfo, examine, sure
+    formDrawerRef,
+    noticeInfo,
+    examine,
+    sure,
   };
 }
 
 // 删除通知（超级管理员权限）
 function handleDelNotice() {
   const del = async (notice: Notice) => {
-    if (user.userInfo.character === '超级管理员') {
+    if (user.userInfo.character === "超级管理员") {
       console.log(notice);
       const res = await delNoticeAPI(notice.noticeID);
       if (res.code === 0) {
@@ -145,7 +171,6 @@ function handleDelNotice() {
   };
   return { del };
 }
-
 </script>
 
 <style scoped lang="less">

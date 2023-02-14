@@ -9,7 +9,7 @@
       </el-aside>
       <el-main class="main">
         <MyTagList></MyTagList>
-        <div class='main-contain'>
+        <div class="main-contain">
           <router-view></router-view>
         </div>
       </el-main>
@@ -28,7 +28,7 @@ const menu = menuStore();
 
 <style scoped lange="less">
 .aside {
-  transition: all .3s;
+  transition: all 0.3s;
 }
 
 .main {

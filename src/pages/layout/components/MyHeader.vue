@@ -19,7 +19,11 @@
     </el-tooltip>
     <!-- 右侧用户名称 & 退出操作 -->
     <div class="ml-auto mr-6 flex items-center">
-      <el-tooltip effect="dark" :content="!isFullscreen ? '全屏' : '退出全屏'" placement="bottom">
+      <el-tooltip
+        effect="dark"
+        :content="!isFullscreen ? '全屏' : '退出全屏'"
+        placement="bottom"
+      >
         <el-icon class="icon-btn" @click="toggle">
           <FullScreen v-if="!isFullscreen" />
           <Aim v-else />
@@ -28,32 +32,58 @@
       <el-avatar :size="30" :src="user.userInfo.avatar" />
       <el-dropdown class="dropdown">
         <span class="flex items-center text-light-50">
-          {{ user.userInfo.nickname ? user.userInfo.nickname : user.userInfo.username }}
+          {{
+            user.userInfo.nickname
+              ? user.userInfo.nickname
+              : user.userInfo.username
+          }}
           <el-icon class="el-icon--right">
             <ArrowDown />
           </el-icon>
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item @click="formDrawerRef.open()">修改密码</el-dropdown-item>
+            <el-dropdown-item @click="formDrawerRef.open()"
+              >修改密码</el-dropdown-item
+            >
             <el-dropdown-item @click="logoutFn">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
     </div>
     <!-- 修改密码 -->
-    <FormDrawer ref="formDrawerRef" title="修改密码" destroy-on-close @submit="onSubmit(formRef)">
+    <FormDrawer
+      ref="formDrawerRef"
+      title="修改密码"
+      destroy-on-close
+      @submit="onSubmit(formRef)"
+    >
       <el-form ref="formRef" :rules="rules" :model="form">
         <el-form-item prop="oldpassword">
-          <el-input v-model="form.oldpassword" type="password" show-password placeholder="原密码">
+          <el-input
+            v-model="form.oldpassword"
+            type="password"
+            show-password
+            placeholder="原密码"
+          >
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="form.password" type="password" show-password placeholder="新密码">
+          <el-input
+            v-model="form.password"
+            type="password"
+            show-password
+            placeholder="新密码"
+          >
           </el-input>
         </el-form-item>
         <el-form-item prop="repassword">
-          <el-input v-model="form.repassword" type="password" show-password placeholder="确认新密码">
+          <el-input
+            v-model="form.repassword"
+            type="password"
+            show-password
+            placeholder="确认新密码"
+          >
           </el-input>
         </el-form-item>
       </el-form>
@@ -72,19 +102,22 @@ import { removeToken } from "@/untils/token";
 import { useFullscreen } from "@vueuse/core";
 import FormDrawer from "@/components/FormDrawer.vue";
 
-const { isFullscreen /* 全屏状态,默认false */, toggle /* 切换全屏 */ } = useFullscreen();
+const { isFullscreen /* 全屏状态,默认false */, toggle /* 切换全屏 */ } =
+  useFullscreen();
 const router = useRouter();
 
 const { user, menu } = mainStore();
 
 // 退出登录
-const logoutFn = () => { handleLogout(); };
+const logoutFn = () => {
+  handleLogout();
+};
 // 刷新
-const handleRefreshFn = () => { location.reload(); };
+const handleRefreshFn = () => {
+  location.reload();
+};
 // 修改密码
 const { formDrawerRef, formRef, form, rules, onSubmit } = handlePassword();
-
-
 
 // 退出登录函数
 async function handleLogout() {
@@ -93,13 +126,14 @@ async function handleLogout() {
   const res = await logoutAPI();
   if (res.code === 0) {
     removeToken();
-    removeToken('tags');
+    removeToken("tags");
     useNotification("退出登录成功", "success", "");
     router.replace("/login");
   } else {
     useNotification("退出登录失败", "error", "");
   }
 }
+
 // 修改密码函数
 function handlePassword() {
   // 修改密码---按钮

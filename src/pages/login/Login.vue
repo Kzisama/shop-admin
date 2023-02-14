@@ -24,7 +24,12 @@
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="form.password" type="password" show-password placeholder="请输入密码">
+          <el-input
+            v-model="form.password"
+            type="password"
+            show-password
+            placeholder="请输入密码"
+          >
             <template #prefix>
               <el-icon class="el-input__icon">
                 <Lock />
@@ -33,7 +38,13 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button class="w-[250px]" round color="#626aef" :loading="loading" @click="onSubmit(formRef)">登 录
+          <el-button
+            class="w-[250px]"
+            round
+            color="#626aef"
+            :loading="loading"
+            @click="onSubmit(formRef)"
+            >登 录
           </el-button>
         </el-form-item>
       </el-form>
@@ -48,7 +59,17 @@ import { setToken } from "@/untils/token";
 import { useNotification } from "@/composables/encapsulation";
 import { loginAPI } from "@/api/user.js";
 import { Lock, User } from "@element-plus/icons-vue";
-import { ElButton, ElCol, ElForm, ElFormItem, ElIcon, ElInput, ElRow, FormInstance, FormRules } from "element-plus";
+import {
+  ElButton,
+  ElCol,
+  ElForm,
+  ElFormItem,
+  ElIcon,
+  ElInput,
+  ElRow,
+  FormInstance,
+  FormRules,
+} from "element-plus";
 import mainStore from "@/store";
 
 const { user } = mainStore();
@@ -57,9 +78,6 @@ const router = useRouter();
 // 提交登录
 const { loading, formRef, form, rules, onSubmit } = handleLogin();
 
-
-
-
 //  登录的处理函数
 function handleLogin() {
   const loading = ref<boolean>(false);
@@ -67,17 +85,17 @@ function handleLogin() {
   // 表单
   const form = reactive({
     username: "",
-    password: ""
+    password: "",
   });
   // 验证规则
   const rules: FormRules = {
     username: [{ required: true, message: "用户名不能为空", trigger: "blur" }],
-    password: [{ required: true, message: "密码不能为空", trigger: "blur" }]
+    password: [{ required: true, message: "密码不能为空", trigger: "blur" }],
   };
   // 提交
   const onSubmit = (formEl: FormInstance | undefined) => {
     if (!formEl) return;
-    formEl.validate(async valid => {
+    formEl.validate(async (valid) => {
       if (!valid) {
         useNotification("请填写完整信息", "warning", "");
         // 重置表单
@@ -85,23 +103,25 @@ function handleLogin() {
         return false;
       }
       loading.value = true; // 按钮处于加载状态
-      loginAPI(form).then(res => {
-        if (res.code === 1) {
-          // 登录失败
-          useNotification(res.msg, "error", "");
-        } else {
-          // 登录成功
-          useNotification("登录成功", "success", "");
-          // 保存token
-          setToken(res.token);
-          // 跳转
-          router.push("/");
-        }
-      }).finally(() => {
-        loading.value = false;
-        // 重置表单
-        formEl.resetFields();
-      });
+      loginAPI(form)
+        .then((res) => {
+          if (res.code === 1) {
+            // 登录失败
+            useNotification(res.msg, "error", "");
+          } else {
+            // 登录成功
+            useNotification("登录成功", "success", "");
+            // 保存token
+            setToken(res.token);
+            // 跳转
+            router.push("/");
+          }
+        })
+        .finally(() => {
+          loading.value = false;
+          // 重置表单
+          formEl.resetFields();
+        });
     });
   };
 
@@ -110,10 +130,9 @@ function handleLogin() {
     formRef,
     form,
     rules,
-    onSubmit
+    onSubmit,
   };
 }
-
 </script>
 
 <style lang="less" scoped>
@@ -139,7 +158,7 @@ function handleLogin() {
       @apply text-3xl font-bold text-gray-800;
     }
 
-    &>div {
+    & > div {
       @apply flex justify-center items-center space-x-2 my-5 text-gray-300;
     }
   }

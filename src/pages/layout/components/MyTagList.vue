@@ -1,9 +1,20 @@
 <template>
   <div class="my-tag-list" :style="{ left: menu.asideWidth }">
-    <el-tabs v-model="activeTag" type="card" class="flex-1" style="min-width: 100px;" @tab-remove="removeTab"
-      @tab-change="changeTab">
-      <el-tab-pane v-for="item in tagList" :key="item.path" :closable="item.path !== '/'" :label="item.title"
-        :name="item.path">
+    <el-tabs
+      v-model="activeTag"
+      type="card"
+      class="flex-1"
+      style="min-width: 100px"
+      @tab-remove="removeTab"
+      @tab-change="changeTab"
+    >
+      <el-tab-pane
+        v-for="item in tagList"
+        :key="item.path"
+        :closable="item.path !== '/'"
+        :label="item.title"
+        :name="item.path"
+      >
       </el-tab-pane>
     </el-tabs>
 
@@ -23,15 +34,15 @@
       </el-dropdown>
     </span>
   </div>
-  <div style="height: 44px;"></div>
+  <div style="height: 44px"></div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { useRoute, onBeforeRouteUpdate } from 'vue-router';
-import mainStore from '@/store';
-import router from '@/router';
-import { getToken, setToken } from '@/untils/token';
+import { ref, watch } from "vue";
+import { useRoute, onBeforeRouteUpdate } from "vue-router";
+import mainStore from "@/store";
+import router from "@/router";
+import { getToken, setToken } from "@/untils/token";
 
 const route = useRoute();
 const { menu } = mainStore();
@@ -39,21 +50,25 @@ const { menu } = mainStore();
 const { activeTag, tagList, changeTab, removeTab, closeFn } = handleTags();
 
 // 侦听tagList的变化 深度监听
-watch(tagList, () => {
-  setToken(JSON.stringify(tagList.value), 'tags');
-}, {
-  deep: true
-});
-
+watch(
+  tagList,
+  () => {
+    setToken(JSON.stringify(tagList.value), "tags");
+  },
+  {
+    deep: true,
+  }
+);
 
 // tagList的一系列操作
 function handleTags() {
   const activeTag = ref(route.path); // 当前处于激活状态的tag
 
-  const tagList = ref([ // 标签列表
+  const tagList = ref([
+    // 标签列表
     {
-      title: '后台首页',
-      path: '/',
+      title: "后台首页",
+      path: "/",
     },
   ]);
 
@@ -66,20 +81,20 @@ function handleTags() {
     // tag 信息
     const tag = {
       title: to.meta.title as string,
-      path: to.path
+      path: to.path,
     };
-    if (tagList.value.findIndex(item => item.path === tag.path) === -1) {
+    if (tagList.value.findIndex((item) => item.path === tag.path) === -1) {
       tagList.value.push(tag);
     }
   });
 
   // 初始化tagList函数
   function initTagList() {
-    const tags = getToken('tags');
+    const tags = getToken("tags");
     if (tags) {
       tagList.value = JSON.parse(tags);
     }
-  };
+  }
 
   // 点击tag跳转
   const changeTab = (tabPath: string) => {
@@ -89,22 +104,24 @@ function handleTags() {
   // 删除tag
   const removeTab = (targetPath: string) => {
     // console.log(targetPath);
-    tagList.value = tagList.value.filter(item => item.path !== targetPath);
-    router.push('/');
+    tagList.value = tagList.value.filter((item) => item.path !== targetPath);
+    router.push("/");
   };
 
   // 删除标签
   const closeFn = (action: string) => {
     const nowPath = route.path;
     switch (action) {
-      case 'other':
+      case "other":
         // 关闭其他
-        tagList.value = tagList.value.filter(item => (item.path === nowPath || item.path === '/'));
+        tagList.value = tagList.value.filter(
+          (item) => item.path === nowPath || item.path === "/"
+        );
         return;
-      case 'all':
+      case "all":
         // 关闭所有
-        tagList.value = tagList.value.filter(item => item.path === '/');
-        router.push('/');
+        tagList.value = tagList.value.filter((item) => item.path === "/");
+        router.push("/");
         return;
     }
   };
@@ -114,7 +131,7 @@ function handleTags() {
     tagList,
     changeTab,
     removeTab,
-    closeFn
+    closeFn,
   };
 }
 </script>
@@ -157,7 +174,5 @@ function handleTags() {
       @apply border-0 bg-white mx-1 rounded;
     }
   }
-
 }
 </style>
-

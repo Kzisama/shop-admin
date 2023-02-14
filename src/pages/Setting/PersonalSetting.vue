@@ -2,7 +2,12 @@
   <el-row class="create-container">
     <el-col :span="6" :offset="2" class="left">
       <div>
-        <el-avatar class="avatar" :size="100" :src="avatarPic" @click="avatar.click()">
+        <el-avatar
+          class="avatar"
+          :size="100"
+          :src="avatarPic"
+          @click="avatar.click()"
+        >
           <span class="describe">
             <el-icon>
               <CirclePlus />
@@ -10,7 +15,7 @@
             点击修改头像
           </span>
         </el-avatar>
-        <input type="file" hidden ref="avatar" @change="selectFn">
+        <input type="file" hidden ref="avatar" @change="selectFn" />
       </div>
     </el-col>
     <el-col :span="14" class="right">
@@ -19,8 +24,14 @@
         <span>个人信息</span>
         <span class="h-[1px] w-30 bg-gray-200"></span>
       </div>
-      <el-form ref="formRef" label-position="left" label-width="100px" :rules="rules" :model="createForm"
-        style="width: 80%;">
+      <el-form
+        ref="formRef"
+        label-position="left"
+        label-width="100px"
+        :rules="rules"
+        :model="createForm"
+        style="width: 80%"
+      >
         <el-form-item label="用户名">
           <el-tag plain>{{ userInfo.username }}</el-tag>
         </el-form-item>
@@ -40,7 +51,9 @@
           <el-input v-model="createForm.email" />
         </el-form-item>
         <el-form-item class="flex justify-between">
-          <el-button type="primary" @click="onSubmit(formRef)" class="flex-1">确定修改</el-button>
+          <el-button type="primary" @click="onSubmit(formRef)" class="flex-1"
+            >确定修改</el-button
+          >
         </el-form-item>
       </el-form>
     </el-col>
@@ -48,13 +61,13 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, computed } from 'vue';
-import { FormInstance, FormRules } from 'element-plus';
-import { useNotification } from '@/composables/encapsulation';
-import { updateAvatarAPI, updateUserInfoAPI } from '@/api/user';
-import mainStore from '@/store';
-import { storeToRefs } from 'pinia';
-import moment from 'moment';
+import { reactive, ref, computed } from "vue";
+import { FormInstance, FormRules } from "element-plus";
+import { useNotification } from "@/composables/encapsulation";
+import { updateAvatarAPI, updateUserInfoAPI } from "@/api/user";
+import mainStore from "@/store";
+import { storeToRefs } from "pinia";
+import moment from "moment";
 
 const { user } = mainStore();
 const { userInfo } = storeToRefs(user);
@@ -78,7 +91,7 @@ function handleAvatar() {
     fd.onload = async () => {
       avatarPic.value = fd.result as string;
       const avatarFormDate = new FormData();
-      avatarFormDate.append('avatar', e.target.files[0]);
+      avatarFormDate.append("avatar", e.target.files[0]);
       const res = await updateAvatarAPI(avatarFormDate);
       if (res.code === 0) {
         useNotification(res.msg, "success", "");
@@ -90,7 +103,9 @@ function handleAvatar() {
   };
 
   return {
-    avatar, avatarPic, selectFn
+    avatar,
+    avatarPic,
+    selectFn,
   };
 }
 
@@ -102,11 +117,12 @@ function handleCreate() {
   const createForm = reactive({
     nickname: userInfo.value.nickname,
     tel: userInfo.value.tel,
-    email: userInfo.value.email
+    email: userInfo.value.email,
   });
 
   const telReg: RegExp = /^1[3-9]\d{9}$/; // 手机号正则
-  const emailReg: RegExp = /^[0-9A-Za-z_]+([-+.][0-9A-Za-z_]+)*@[0-9A-Za-z_]+([-.][0-9A-Za-z_]+)*\.[0-9A-Za-z_]+([-.][0-9A-Za-z_]+)*$/; // 邮箱正则
+  const emailReg: RegExp =
+    /^[0-9A-Za-z_]+([-+.][0-9A-Za-z_]+)*@[0-9A-Za-z_]+([-.][0-9A-Za-z_]+)*\.[0-9A-Za-z_]+([-.][0-9A-Za-z_]+)*$/; // 邮箱正则
 
   // 自定义验证规则
   const validateNickname = (rule: any, value: any, callback: any) => {
@@ -142,7 +158,7 @@ function handleCreate() {
 
   const onSubmit = (formEl: FormInstance | undefined) => {
     if (!formEl) return;
-    formEl.validate(async valid => {
+    formEl.validate(async (valid) => {
       if (!valid) {
         useNotification("请填写正确信息", "warning", "");
         formEl.resetFields(); // 重置表单
@@ -159,7 +175,10 @@ function handleCreate() {
   };
 
   return {
-    formRef, createForm, rules, onSubmit
+    formRef,
+    createForm,
+    rules,
+    onSubmit,
   };
 }
 </script>
@@ -170,8 +189,8 @@ function handleCreate() {
   min-height: 500px;
 
   .left {
-    background-color: #0093E9;
-    background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
+    background-color: #0093e9;
+    background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
 
     @apply flex justify-center;
 
@@ -181,7 +200,7 @@ function handleCreate() {
       &:hover {
         .describe {
           opacity: 1;
-          transition: all .2s;
+          transition: all 0.2s;
         }
       }
 
@@ -195,7 +214,7 @@ function handleCreate() {
   .right {
     @apply flex flex-col justify-center items-center bg-light-50;
 
-    &>div {
+    & > div {
       @apply flex justify-center items-center space-x-2 my-5 text-gray-500;
     }
   }

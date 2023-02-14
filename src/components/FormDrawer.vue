@@ -1,7 +1,13 @@
 <!-- 二次封装----Drawer抽屉组件 -->
 <template>
-  <el-drawer class="draw  er" v-model="showDrawer" :title="title" :size="size" :close-on-click-modal="false"
-    :destroy-on-close="destroyOnClose">
+  <el-drawer
+    class="drawer"
+    v-model="showDrawer"
+    :title="title"
+    :size="size"
+    :close-on-click-modal="false"
+    :destroy-on-close="destroyOnClose"
+  >
     <div class="formDrawer">
       <div class="body">
         <el-scrollbar>
@@ -9,7 +15,9 @@
         </el-scrollbar>
       </div>
       <div class="actions">
-        <el-button type="primary" @click="submit" :loading="isLoading">{{ confimText }}</el-button>
+        <el-button type="primary" @click="submit" :loading="isLoading">
+          {{ confimText }}
+        </el-button>
         <el-button @click="close">取消</el-button>
       </div>
     </div>
@@ -18,6 +26,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+
 const showDrawer = ref<boolean>(false);
 
 const props = defineProps({
@@ -36,28 +45,35 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['submit']);
+const emit = defineEmits(["submit"]);
 
-const open = () => { // 显示抽屉组件
+const open = () => {
+  // 显示抽屉组件
   showDrawer.value = true;
 };
-const close = () => { // 隐藏抽屉组件
+const close = () => {
+  // 隐藏抽屉组件
   showDrawer.value = false;
 };
-const submit = () => { // 按钮的事件（由父组件提供）
-  emit('submit');
+const submit = () => {
+  // 按钮的事件（由父组件提供）
+  emit("submit");
 };
 
 const isLoading = ref<boolean>(false); // 加载状态
-const load = () => { isLoading.value = true; };
-const unload = () => { isLoading.value = false; };
+const load = () => {
+  isLoading.value = true;
+};
+const unload = () => {
+  isLoading.value = false;
+};
 
 defineExpose({
   // 暴露给父组件
   open,
   close,
   load,
-  unload
+  unload,
 });
 </script>
 

@@ -1,11 +1,10 @@
 <template>
-  <el-scrollbar style="height: 100vh;">
+  <el-scrollbar style="height: 100vh">
     <router-view></router-view>
   </el-scrollbar>
 </template>
 
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <style lang="less">
 body {
@@ -13,8 +12,7 @@ body {
 }
 
 #nprogress .bar {
-  background-color: #FFDEE9;
-  background-image: linear-gradient(0deg, #FFDEE9 0%, #B5FFFC 100%);
-
+  background-color: #ffdee9;
+  background-image: linear-gradient(0deg, #ffdee9 0%, #b5fffc 100%);
 }
 </style>
