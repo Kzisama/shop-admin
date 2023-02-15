@@ -24,12 +24,7 @@
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input
-            v-model="form.password"
-            type="password"
-            show-password
-            placeholder="请输入密码"
-          >
+          <el-input v-model="form.password" type="password" show-password placeholder="请输入密码">
             <template #prefix>
               <el-icon class="el-input__icon">
                 <Lock />
@@ -53,12 +48,12 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
-import { useRouter } from "vue-router";
-import { setToken } from "@/untils/token";
-import { useNotification } from "@/composables/encapsulation";
-import { loginAPI } from "@/api/user.js";
-import { Lock, User } from "@element-plus/icons-vue";
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { setToken } from '@/untils/token'
+import { useNotification } from '@/composables/encapsulation'
+import { loginAPI } from '@/api/user.js'
+import { Lock, User } from '@element-plus/icons-vue'
 import {
   ElButton,
   ElCol,
@@ -69,61 +64,61 @@ import {
   ElRow,
   FormInstance,
   FormRules,
-} from "element-plus";
-import mainStore from "@/store";
+} from 'element-plus'
+import mainStore from '@/store'
 
-const { user } = mainStore();
-const router = useRouter();
+const { user } = mainStore()
+const router = useRouter()
 
 // 提交登录
-const { loading, formRef, form, rules, onSubmit } = handleLogin();
+const { loading, formRef, form, rules, onSubmit } = handleLogin()
 
 //  登录的处理函数
 function handleLogin() {
-  const loading = ref<boolean>(false);
-  const formRef = ref<FormInstance>();
+  const loading = ref<boolean>(false)
+  const formRef = ref<FormInstance>()
   // 表单
   const form = reactive({
-    username: "",
-    password: "",
-  });
+    username: '',
+    password: '',
+  })
   // 验证规则
   const rules: FormRules = {
-    username: [{ required: true, message: "用户名不能为空", trigger: "blur" }],
-    password: [{ required: true, message: "密码不能为空", trigger: "blur" }],
-  };
+    username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
+    password: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
+  }
   // 提交
   const onSubmit = (formEl: FormInstance | undefined) => {
-    if (!formEl) return;
+    if (!formEl) return
     formEl.validate(async (valid) => {
       if (!valid) {
-        useNotification("请填写完整信息", "warning", "");
+        useNotification('请填写完整信息', 'warning', '')
         // 重置表单
-        formEl.resetFields();
-        return false;
+        formEl.resetFields()
+        return false
       }
-      loading.value = true; // 按钮处于加载状态
+      loading.value = true // 按钮处于加载状态
       loginAPI(form)
         .then((res) => {
           if (res.code === 1) {
             // 登录失败
-            useNotification(res.msg, "error", "");
+            useNotification(res.msg, 'error', '')
           } else {
             // 登录成功
-            useNotification("登录成功", "success", "");
+            useNotification('登录成功', 'success', '')
             // 保存token
-            setToken(res.token);
+            setToken(res.token)
             // 跳转
-            router.push("/");
+            router.push('/')
           }
         })
         .finally(() => {
-          loading.value = false;
+          loading.value = false
           // 重置表单
-          formEl.resetFields();
-        });
-    });
-  };
+          formEl.resetFields()
+        })
+    })
+  }
 
   return {
     loading,
@@ -131,7 +126,7 @@ function handleLogin() {
     form,
     rules,
     onSubmit,
-  };
+  }
 }
 </script>
 

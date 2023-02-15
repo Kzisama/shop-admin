@@ -25,15 +25,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue'
 
-const showDrawer = ref<boolean>(false);
+const showDrawer = ref<boolean>(false)
 
 const props = defineProps({
   title: String,
   size: {
     type: String,
-    default: "45%",
+    default: '45%',
   },
   destroyOnClose: {
     type: Boolean,
@@ -41,32 +41,32 @@ const props = defineProps({
   },
   confimText: {
     type: String,
-    default: "提交",
+    default: '提交',
   },
-});
+})
 
-const emit = defineEmits(["submit"]);
+const emit = defineEmits(['submit'])
 
 const open = () => {
   // 显示抽屉组件
-  showDrawer.value = true;
-};
+  showDrawer.value = true
+}
 const close = () => {
   // 隐藏抽屉组件
-  showDrawer.value = false;
-};
+  showDrawer.value = false
+}
 const submit = () => {
   // 按钮的事件（由父组件提供）
-  emit("submit");
-};
+  emit('submit')
+}
 
-const isLoading = ref<boolean>(false); // 加载状态
+const isLoading = ref<boolean>(false) // 加载状态
 const load = () => {
-  isLoading.value = true;
-};
+  isLoading.value = true
+}
 const unload = () => {
-  isLoading.value = false;
-};
+  isLoading.value = false
+}
 
 defineExpose({
   // 暴露给父组件
@@ -74,7 +74,7 @@ defineExpose({
   close,
   load,
   unload,
-});
+})
 </script>
 
 <style scoped lang="less">

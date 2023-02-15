@@ -10,10 +10,7 @@
       >
         <template v-for="(item, index) in asideMenu" :key="index">
           <!-- 有二级菜单 -->
-          <el-sub-menu
-            v-if="item.children && item.children.length > 0"
-            :index="item.name"
-          >
+          <el-sub-menu v-if="item.children && item.children.length > 0" :index="item.name">
             <template #title>
               <el-icon>
                 <component :is="item.icon"></component>
@@ -45,20 +42,20 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter, useRoute } from "vue-router";
-import mainStore from "@/store";
+import { useRouter, useRoute } from 'vue-router'
+import mainStore from '@/store'
 
-const router = useRouter();
-const route = useRoute();
-const { menu, menuRoute } = mainStore();
+const router = useRouter()
+const route = useRoute()
+const { menu, menuRoute } = mainStore()
 
 // 树形结构
-const asideMenu = menuRoute.routeTree;
+const asideMenu = menuRoute.routeTree
 
 // 路由跳转
 const selectFn = (path: string) => {
-  router.push(path);
-};
+  router.push(path)
+}
 </script>
 
 <style scoped lang="less">

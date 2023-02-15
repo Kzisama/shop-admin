@@ -18,12 +18,12 @@
 </template>
 
 <script setup lang="ts">
-import { menuStore } from "@/store/menuStore";
-import MyHeader from "./components/MyHeader.vue";
-import MyMenu from "./components/MyMenu.vue";
-import MyTagList from "./components/MyTagList.vue";
+import { menuStore } from '@/store/menuStore'
+import MyHeader from './components/MyHeader.vue'
+import MyMenu from './components/MyMenu.vue'
+import MyTagList from './components/MyTagList.vue'
 
-const menu = menuStore();
+const menu = menuStore()
 </script>
 
 <style scoped lange="less">
