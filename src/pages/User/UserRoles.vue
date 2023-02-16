@@ -14,7 +14,8 @@
           <template #default="scope">
             <el-button
               type="primary"
-              plain
+              link
+              size="small"
               v-if="scope.row.character !== '超级管理员'"
               @click="changeInfo(scope.row)"
             >
@@ -22,7 +23,8 @@
             </el-button>
             <el-button
               type="primary"
-              plain
+              link
+              size="small"
               v-if="scope.row.character !== '超级管理员'"
               @click="changeRole(scope.row)"
             >
@@ -32,18 +34,9 @@
         </el-table-column>
       </el-table>
     </el-row>
-    <FormDrawer
-      ref="formDrawerRefAdd"
-      title="添加职位"
-      @submit="submitForm(formAddRef)"
-    >
+    <FormDrawer ref="formDrawerRefAdd" title="添加职位" @submit="submitForm(formAddRef)">
       <div class="bg-light-50 shadow-inner p-5 rounded">
-        <el-form
-          ref="formAddRef"
-          :model="addForm"
-          :rules="rules"
-          label-position="left"
-        >
+        <el-form ref="formAddRef" :model="addForm" :rules="rules" label-position="left">
           <el-form-item label="职称" prop="character">
             <el-input v-model="addForm.character"></el-input>
           </el-form-item>
@@ -59,12 +52,7 @@
       @submit="submitChangeForm(formChangeRef)"
     >
       <div class="bg-light-50 shadow-inner p-5 rounded">
-        <el-form
-          ref="formChangeRef"
-          :model="changeForm"
-          :rules="changeRules"
-          label-position="left"
-        >
+        <el-form ref="formChangeRef" :model="changeForm" :rules="changeRules" label-position="left">
           <el-form-item label="职称" prop="character">
             <el-input v-model="changeForm.character"></el-input>
           </el-form-item>
@@ -99,35 +87,29 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref, computed } from "vue";
+import { onMounted, reactive, ref, computed } from 'vue'
 import {
   getAllRoutesAPI,
   getRoleAPI,
   addCharacterAPI,
   setCharacterAPI,
   setRolesAPI,
-} from "@/api/user";
-import { dataToTree } from "@/hooks";
-import { ElTree, FormInstance, FormRules } from "element-plus";
-import FormDrawer from "@/components/FormDrawer.vue";
-import { IRoute, Role } from "@/types";
-import { useNotification } from "@/composables/encapsulation";
+} from '@/api/user'
+import { dataToTree } from '@/hooks'
+import { ElTree, FormInstance, FormRules } from 'element-plus'
+import FormDrawer from '@/components/FormDrawer.vue'
+import { IRoute, Role } from '@/types'
+import { useNotification } from '@/composables/encapsulation'
 
-const tableData = ref<Role[]>([]); // 表格展示数据
+const tableData = ref<Role[]>([]) // 表格展示数据
 
 onMounted(async () => {
-  const res = await getRoleAPI();
-  tableData.value = res.data;
-});
+  const res = await getRoleAPI()
+  tableData.value = res.data
+})
 
-const {
-  formDrawerRefAdd,
-  addCharacter,
-  formAddRef,
-  addForm,
-  rules,
-  submitForm,
-} = handleAddCharacter();
+const { formDrawerRefAdd, addCharacter, formAddRef, addForm, rules, submitForm } =
+  handleAddCharacter()
 
 const {
   formDrawerRefChange,
@@ -136,52 +118,46 @@ const {
   changeRules,
   changeInfo,
   submitChangeForm,
-} = handleChangeInfo();
+} = handleChangeInfo()
 
-const {
-  treeRef,
-  formDrawerRefSet,
-  changeRole,
-  routerTree,
-  defaultProps,
-  setRoles,
-} = handleChangeRole();
+const { treeRef, formDrawerRefSet, changeRole, routerTree, defaultProps, setRoles } =
+  handleChangeRole()
 
 // 点击新增
 function handleAddCharacter() {
-  const formDrawerRefAdd = ref();
+  const formDrawerRefAdd = ref()
   const addCharacter = () => {
-    formDrawerRefAdd.value.open();
-  };
+    formDrawerRefAdd.value.open()
+  }
 
-  const formAddRef = ref<FormInstance>();
+  const formAddRef = ref<FormInstance>()
   const addForm = reactive({
-    character: "",
-    describe: "",
-  });
+    character: '',
+    describe: '',
+  })
   const rules = reactive<FormRules>({
-    character: [{ required: true, message: "请输入职称", trigger: "blur" }],
-    describe: [{ required: true, message: "请输入描述信息", trigger: "blur" }],
-  });
+    character: [{ required: true, message: '请输入职称', trigger: 'blur' }],
+    describe: [{ required: true, message: '请输入描述信息', trigger: 'blur' }],
+  })
   const submitForm = (formEl: FormInstance | undefined) => {
-    if (!formEl) return;
+    if (!formEl) return
     formEl.validate(async (valid) => {
       if (!valid) {
-        useNotification("请填写正确信息", "warning", "");
-        return false;
+        useNotification('请填写正确信息', 'warning', '')
+        return false
       }
-      const res = await addCharacterAPI(addForm);
+      const res = await addCharacterAPI(addForm)
       if (res.code === 0) {
-        useNotification(res.msg, "success", "");
-        formEl.resetFields();
-        formDrawerRefAdd.value.close();
-        location.reload();
+        useNotification(res.msg, 'success', '')
+        formEl.resetFields()
+        formDrawerRefAdd.value.close()
+        location.reload()
       } else {
-        useNotification(res.msg, "error", "");
-        formEl.resetFields();
+        useNotification(res.msg, 'error', '')
+        formEl.resetFields()
       }
-    });
-  };
+    })
+  }
 
   return {
     formDrawerRefAdd,
@@ -190,52 +166,52 @@ function handleAddCharacter() {
     addForm,
     rules,
     submitForm,
-  };
+  }
 }
 
 // 点击修改信息
 function handleChangeInfo() {
-  const rowInfo = ref<Role | null>();
+  const rowInfo = ref<Role | null>()
 
-  const formDrawerRefChange = ref();
+  const formDrawerRefChange = ref()
   const changeInfo = (row: Role) => {
-    formDrawerRefChange.value.open();
-    changeForm.character = row.character;
-    changeForm.describe = row.describe;
-    rowInfo.value = row;
-  };
+    formDrawerRefChange.value.open()
+    changeForm.character = row.character
+    changeForm.describe = row.describe
+    rowInfo.value = row
+  }
 
-  const formChangeRef = ref<FormInstance>();
+  const formChangeRef = ref<FormInstance>()
   const changeForm = reactive({
-    character: "",
-    describe: "",
-  });
+    character: '',
+    describe: '',
+  })
   const changeRules = reactive<FormRules>({
-    character: [{ required: true, message: "请输入职称", trigger: "blur" }],
-    describe: [{ required: true, message: "请输入描述信息", trigger: "blur" }],
-  });
+    character: [{ required: true, message: '请输入职称', trigger: 'blur' }],
+    describe: [{ required: true, message: '请输入描述信息', trigger: 'blur' }],
+  })
   const submitChangeForm = (formEl: FormInstance | undefined) => {
-    if (!formEl) return;
+    if (!formEl) return
     formEl.validate(async (valid) => {
       if (!valid) {
-        useNotification("请填写正确信息", "warning", "");
-        return false;
+        useNotification('请填写正确信息', 'warning', '')
+        return false
       }
       const res = await setCharacterAPI({
         ...changeForm,
         id: (rowInfo.value as Role).id,
-      });
+      })
       if (res.code === 0) {
-        useNotification(res.msg, "success", "");
-        formEl.resetFields();
-        formDrawerRefChange.value.close();
-        location.reload();
+        useNotification(res.msg, 'success', '')
+        formEl.resetFields()
+        formDrawerRefChange.value.close()
+        location.reload()
       } else {
-        useNotification(res.msg, "error", "");
-        formEl.resetFields();
+        useNotification(res.msg, 'error', '')
+        formEl.resetFields()
       }
-    });
-  };
+    })
+  }
 
   return {
     formDrawerRefChange,
@@ -244,55 +220,55 @@ function handleChangeInfo() {
     changeRules,
     changeInfo,
     submitChangeForm,
-  };
+  }
 }
 
 // 点击配置权限
 function handleChangeRole() {
-  const rowInfo = ref<any>();
+  const rowInfo = ref<any>()
 
-  const formDrawerRefSet = ref(); // formDrawer实例
-  const treeRef = ref<InstanceType<typeof ElTree>>(); // 树形结构实例
-  const routerTree = ref<IRoute[]>(); // 树形结构信息
+  const formDrawerRefSet = ref() // formDrawer实例
+  const treeRef = ref<InstanceType<typeof ElTree>>() // 树形结构实例
+  const routerTree = ref<IRoute[]>() // 树形结构信息
   const defaultProps = {
     // 树形结构配置
-    label: "title",
-    children: "children",
-  };
+    label: 'title',
+    children: 'children',
+  }
 
   onMounted(async () => {
-    const res = await getAllRoutesAPI();
-    routerTree.value = dataToTree(res.data);
-  });
+    const res = await getAllRoutesAPI()
+    routerTree.value = dataToTree(res.data)
+  })
 
   // 获取选中节点组成的数组
   const setRoles = async () => {
     // getCheckedNodes(arg1:boolean,arg2:boolean)
     // leafOnly, includeHalfChecked) 接收两个布尔类型参数: 1. 默认值为 false. 若参数为 true, 它将返回当前选中节点的子节点 2. 默认值为 false. 如果参数为 true, 返回值包含半选中节点数据
-    const checkedRoles = treeRef.value!.getCheckedNodes(false, true);
-    console.log(checkedRoles);
+    const checkedRoles = treeRef.value!.getCheckedNodes(false, true)
+    console.log(checkedRoles)
     const roles = checkedRoles.reduce((prev: any[], current: any) => {
-      prev.push(current.routeID);
-      return prev;
-    }, []);
+      prev.push(current.routeID)
+      return prev
+    }, [])
     const res = await setRolesAPI({
       id: rowInfo.value.id,
       roles: JSON.stringify(roles),
-    });
+    })
     if (res.code === 0) {
-      useNotification(res.msg, "success", "");
-      formDrawerRefSet.value.close();
-      location.reload();
+      useNotification(res.msg, 'success', '')
+      formDrawerRefSet.value.close()
+      location.reload()
     } else {
-      useNotification(res.msg, "error", "");
+      useNotification(res.msg, 'error', '')
     }
-  };
+  }
 
   const changeRole = (row: Role) => {
-    formDrawerRefSet.value.open();
-    rowInfo.value = row;
-    console.log(rowInfo.value);
-  };
+    formDrawerRefSet.value.open()
+    rowInfo.value = row
+    console.log(rowInfo.value)
+  }
 
   return {
     treeRef,
@@ -301,7 +277,7 @@ function handleChangeRole() {
     routerTree,
     defaultProps,
     setRoles,
-  };
+  }
 }
 </script>
 

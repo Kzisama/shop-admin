@@ -54,13 +54,17 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, computed } from 'vue'
+import { reactive, ref, computed, onMounted } from 'vue'
 import { FormInstance, FormRules } from 'element-plus'
 import { useNotification } from '@/composables/encapsulation'
 import { updateAvatarAPI, updateUserInfoAPI } from '@/api/user'
 import mainStore from '@/store'
 import { storeToRefs } from 'pinia'
 import moment from 'moment'
+
+onMounted(() => {
+  console.log(132)
+})
 
 const { user } = mainStore()
 const { userInfo } = storeToRefs(user)
