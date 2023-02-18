@@ -1,5 +1,8 @@
 <template>
-  <div>商品管理</div>
+  <div>
+    <el-row>1</el-row>
+    <el-row>商品列表</el-row>
+  </div>
 </template>
 
 <script setup lang="ts"></script>

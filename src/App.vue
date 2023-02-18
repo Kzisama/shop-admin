@@ -4,7 +4,20 @@
   </el-scrollbar>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onUnmounted } from 'vue'
+import { logoutAPI } from '@/api/user'
+
+window.addEventListener('beforeunload', async () => {
+  await logoutAPI()
+})
+
+onUnmounted(() => {
+  window.removeEventListener('beforeunload', async () => {
+    await logoutAPI()
+  })
+})
+</script>
 
 <style lang="less">
 body {
