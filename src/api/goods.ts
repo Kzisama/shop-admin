@@ -15,3 +15,11 @@ export const setCategoryAPI = (form: { categoryID: number; name: string }) => {
 export const delCategoryAPI = (form: { categoryID: number }) => {
   return axios.post('/goods/delcategory', form)
 }
+
+export const addGoodsAPI = (fd: FormData) => {
+  return axios.post('/goods/addgoods', fd)
+}
+
+export const getGoodsListAPI = () => {
+  return axios.get('/goods/getgoods')
+}

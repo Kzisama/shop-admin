@@ -1,6 +1,7 @@
 import { getCurrentInstance } from 'vue'
 
 export const useGlobal = () => {
+  // 解构
   const {
     appContext: {
       config: { globalProperties },

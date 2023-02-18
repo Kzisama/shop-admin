@@ -35,3 +35,12 @@ export interface Category {
   name: string
   status: number
 }
+
+export interface Goods {
+  goodsID: number
+  name: string
+  category: string
+  price: number
+  inventory: number
+  pic: string
+}
