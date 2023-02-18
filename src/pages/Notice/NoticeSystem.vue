@@ -1,7 +1,7 @@
 <template>
   <div class="notice-contain">
     <!-- 筛选 -->
-    <el-row>
+    <TableHeader @reload="getNotice">
       <el-dropdown size="small" split-button type="primary">
         筛选通知
         <template #dropdown>
@@ -11,7 +11,7 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-    </el-row>
+    </TableHeader>
     <!-- 表格主体 -->
     <el-row class="my-5">
       <el-table v-loading="loading" :data="tableData" stripe style="width: 100%" height="480">
@@ -27,7 +27,7 @@
         <el-table-column prop="publisher" label="发布者" />
         <el-table-column label="操作">
           <template #default="scope">
-            <el-button type="primary" @click="examine(scope.row)"> 查看 </el-button>
+            <el-button type="primary" @click="examine(scope.row)">查看</el-button>
             <el-button
               type="danger"
               @click="del(scope.row)"
@@ -59,6 +59,7 @@ import { delNoticeAPI, getNoticeAPI } from '@/api/notice'
 import mainStore from '@/store'
 import moment from 'moment'
 import FormDrawer from '@/components/FormDrawer.vue'
+import TableHeader from '@/components/TableHeader.vue'
 import { useNotification } from '@/composables/encapsulation'
 
 const { user } = mainStore()
@@ -73,7 +74,7 @@ interface Notice {
 }
 
 // 筛选通知
-const { tableData, loading, choose } = handleChoose()
+const { tableData, loading, choose, getNotice } = handleChoose()
 // 查看通知详情
 const { formDrawerRef, noticeInfo, examine, sure } = handleExamine()
 // 删除通知
@@ -85,7 +86,7 @@ function handleChoose() {
   const tableData = ref<Notice[]>([]) // 表格展示数据
   const loading = ref<boolean>(true)
 
-  onMounted(async () => {
+  const getNotice = async () => {
     loading.value = true
     const res = await getNoticeAPI()
     console.log(res)
@@ -96,6 +97,10 @@ function handleChoose() {
     allNotice.value = res.data
     tableData.value = allNotice.value
     loading.value = false
+  }
+
+  onMounted(() => {
+    getNotice()
   })
 
   // 筛选通知
@@ -115,8 +120,9 @@ function handleChoose() {
 
   return {
     tableData,
-    choose,
     loading,
+    choose,
+    getNotice,
   }
 }
 

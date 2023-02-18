@@ -1,11 +1,11 @@
 <template>
   <div class="role-contain">
-    <el-row>
+    <TableHeader @reload="getRoels">
       <el-button type="primary" @click="addCharacter" plain size="small">
         <el-icon><component is="Edit"></component></el-icon>
         新增
       </el-button>
-    </el-row>
+    </TableHeader>
     <el-row>
       <el-table :data="tableData" stripe style="width: 100%">
         <el-table-column prop="character" label="职称" />
@@ -98,14 +98,20 @@ import {
 import { dataToTree } from '@/hooks'
 import { ElTree, FormInstance, FormRules } from 'element-plus'
 import FormDrawer from '@/components/FormDrawer.vue'
+import TableHeader from '@/components/TableHeader.vue'
 import { IRoute, Role } from '@/types'
 import { useNotification } from '@/composables/encapsulation'
 
 const tableData = ref<Role[]>([]) // 表格展示数据
 
-onMounted(async () => {
+// 获取用户权限表数据
+const getRoels = async () => {
   const res = await getRoleAPI()
   tableData.value = res.data
+}
+
+onMounted(async () => {
+  getRoels()
 })
 
 const { formDrawerRefAdd, addCharacter, formAddRef, addForm, rules, submitForm } =

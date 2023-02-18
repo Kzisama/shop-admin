@@ -1,17 +1,19 @@
 <template>
   <div class="user-contain">
     <!-- 头部筛选 -->
-    <el-row class="flex items-center mb-5 text-sm">
-      筛选用户：
-      <el-select v-model="selectVal" @change="choose" placeholder="Select">
-        <el-option
-          v-for="item in userOptions"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
-      </el-select>
-    </el-row>
+    <TableHeader>
+      <el-row class="flex items-center text-sm">
+        筛选用户：
+        <el-select v-model="selectVal" @change="choose" placeholder="Select" size="small">
+          <el-option
+            v-for="item in userOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </el-row>
+    </TableHeader>
     <!-- 表格主体 -->
     <el-row>
       <el-table v-loading="loading" :data="tableData" stripe style="width: 100%" height="500">
@@ -79,13 +81,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, reactive } from 'vue'
+import { ref, onMounted } from 'vue'
 import { ElRow, ElTable, ElTableColumn, ElButton } from 'element-plus'
 import { Role, UserInfo } from '@/types/index'
 import { getRoleAPI, getUserInfoAllAPI } from '@/api/user'
 import moment from 'moment'
 import { useGlobal } from '@/hooks/useGlobal'
 import FormDrawer from '@/components/FormDrawer.vue'
+import TableHeader from '@/components/TableHeader.vue'
 
 const properties = useGlobal() // 获取全局挂载的属性
 
@@ -125,7 +128,7 @@ function handleChoose() {
     loading.value = false
   })
 
-  // 筛选通知
+  // 筛选职位
   const choose = (val: string) => {
     if (val === '全部') {
       tableData.value = allUser.value

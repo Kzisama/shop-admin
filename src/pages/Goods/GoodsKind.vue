@@ -1,18 +1,13 @@
 <template>
   <div class="goods-contain">
-    <el-row>
+    <TableHeader @reload="refreshFn">
       <el-button type="primary" plain size="small" @click="dialog.open()">
         <el-icon>
           <component is="Edit"></component>
         </el-icon>
         新增
       </el-button>
-      <el-link type="primary" class="ml-auto mr-5" @click.prevent="refreshFn">
-        <el-icon>
-          <Refresh />
-        </el-icon>
-      </el-link>
-    </el-row>
+    </TableHeader>
     <el-row>
       <el-table :data="categoryData" style="width: 100%">
         <el-table-column fixed prop="categoryID" label="ID" width="150" />
@@ -25,17 +20,8 @@
         </el-table-column>
         <el-table-column fixed="right" label="Operations" width="120">
           <template #default="scope">
-            <el-button
-              link
-              type="primary"
-              size="small"
-              @click="edit(scope.row)"
-            >
-              编辑
-            </el-button>
-            <el-button link type="primary" size="small" @click="del(scope.row)">
-              下架
-            </el-button>
+            <el-button link type="primary" size="small" @click="edit(scope.row)">编辑</el-button>
+            <el-button link type="primary" size="small" @click="del(scope.row)">下架</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -48,30 +34,15 @@
     >
       <el-form ref="categoryFormRef" :rules="rules" :model="categoryForm">
         <el-form-item label="名称" prop="name">
-          <el-input
-            v-model="categoryForm.name"
-            palceholder="名称"
-            v-focus
-          ></el-input>
+          <el-input v-model="categoryForm.name" palceholder="名称" v-focus></el-input>
         </el-form-item>
       </el-form>
     </MyDialog>
-    <FormDrawer
-      ref="drawerRef"
-      title="修改类别"
-      @submit="submitSet(categorySetFormRef)"
-    >
+    <FormDrawer ref="drawerRef" title="修改类别" @submit="submitSet(categorySetFormRef)">
       <div class="bg-light-50 shadow-inner p-5 rounded">
-        <el-form
-          ref="categorySetFormRef"
-          :rules="rulesSet"
-          :model="categorySetForm"
-        >
+        <el-form ref="categorySetFormRef" :rules="rulesSet" :model="categorySetForm">
           <el-form-item label="名称" prop="name">
-            <el-input
-              v-model="categorySetForm.name"
-              palceholder="名称"
-            ></el-input>
+            <el-input v-model="categorySetForm.name" palceholder="名称"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -85,25 +56,13 @@ import { FormInstance, FormRules } from 'element-plus'
 import { useNotification } from '@/composables/encapsulation'
 import MyDialog from '@/components/MyDialog.vue'
 import FormDrawer from '@/components/FormDrawer.vue'
-import {
-  addCategoryAPI,
-  delCategoryAPI,
-  getCategoryAPI,
-  setCategoryAPI,
-} from '@/api/goods'
+import TableHeader from '@/components/TableHeader.vue'
+import { addCategoryAPI, delCategoryAPI, getCategoryAPI, setCategoryAPI } from '@/api/goods'
 import { Category } from '@/types'
 
 const { categoryData, refreshFn } = getCategory()
-const { dialog, categoryFormRef, categoryForm, rules, submit, closeFn } =
-  addCategory()
-const {
-  drawerRef,
-  categorySetFormRef,
-  categorySetForm,
-  rulesSet,
-  edit,
-  submitSet,
-} = setCategory()
+const { dialog, categoryFormRef, categoryForm, rules, submit, closeFn } = addCategory()
+const { drawerRef, categorySetFormRef, categorySetForm, rulesSet, edit, submitSet } = setCategory()
 const { del } = delCategory()
 
 // 获取商品分类
