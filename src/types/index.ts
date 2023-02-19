@@ -37,10 +37,12 @@ export interface Category {
 }
 
 export interface Goods {
+  [name: string]: any
   goodsID: number
   name: string
   category: string
   price: number
   inventory: number
   pic: string
+  status: number
 }

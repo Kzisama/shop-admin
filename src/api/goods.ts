@@ -23,3 +23,14 @@ export const addGoodsAPI = (fd: FormData) => {
 export const getGoodsListAPI = () => {
   return axios.get('/goods/getgoods')
 }
+
+export const setGoodsAPI = (fd: FormData) => {
+  return axios.post('/goods/setgoods', fd)
+}
+
+export const takeOffGoodsAPI = (obj: { goodsID: number; status: number }) => {
+  return axios.post('/goods/takeoffgoods', obj)
+}
+export const delGoodsAPI = (obj: { goodsID: number }) => {
+  return axios.post('/goods/delgoods', obj)
+}

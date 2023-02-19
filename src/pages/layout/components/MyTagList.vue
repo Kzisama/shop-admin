@@ -14,8 +14,7 @@
         :closable="item.path !== '/'"
         :label="item.title"
         :name="item.path"
-      >
-      </el-tab-pane>
+      ></el-tab-pane>
     </el-tabs>
 
     <span class="tag-btn">
@@ -140,7 +139,7 @@ function handleTags() {
   top: 64px;
   right: 0;
   height: 44px;
-  z-index: 2;
+  z-index: 5;
   @apply flex items-center bg-gray-100 px-2 rounded;
 
   .tag-btn {
