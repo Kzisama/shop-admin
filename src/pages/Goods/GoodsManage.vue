@@ -1,11 +1,22 @@
 <template>
-  <div>
-    <TableHeader>
+  <div class="bg-light-50 p-5 rounded">
+    <TableHeader @reload="reloadFn">
       <el-button type="primary" size="small" @click="addDrawerRef.open()">新增</el-button>
     </TableHeader>
+    <el-row class="mb-2">
+      <!-- 按名称筛选商品 -->
+      <p class="flex items-center">
+        <el-input
+          v-model="searchName"
+          placeholder="请输入商品名称"
+          :suffix-icon="Search"
+          @change="search"
+        />
+      </p>
+    </el-row>
     <!-- 主体 -->
     <el-row>
-      <el-table :data="goodsTable" style="width: 100%">
+      <el-table :data="tableData" style="width: 100%">
         <el-table-column fixed label="商品">
           <template #default="scope">
             <div class="flex">
@@ -150,6 +161,17 @@
       </el-form>
     </FormDrawer>
     <!-- 上架/下架商品 -->
+    <MyDialog
+      title="删除商品"
+      ref="takeDialogRef"
+      @submit="submitTakeOff"
+      @reset="takeDialogRef.close()"
+    >
+      <div class="bg-light-50 shadow-inner p-5 rounded text-xl">
+        确定{{ _goods.status === 0 ? '下架' : '上架' }}商品吗？
+      </div>
+    </MyDialog>
+    <!-- 删除商品 -->
     <MyDialog title="删除商品" ref="delDialogRef" @submit="submitDel" @reset="delDialogRef.close()">
       <div class="bg-light-50 shadow-inner p-5 rounded text-xl">确定删除商品吗？</div>
     </MyDialog>
@@ -159,6 +181,7 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
 import { FormInstance, FormRules, UploadProps } from 'element-plus'
+import { Search } from '@element-plus/icons-vue'
 import TableHeader from '@/components/TableHeader.vue'
 import FormDrawer from '@/components/FormDrawer.vue'
 import MyDialog from '@/components/MyDialog.vue'
@@ -175,9 +198,10 @@ import { useNotification } from '@/composables/encapsulation'
 import { useGlobal } from '@/hooks/useGlobal'
 
 const properties = useGlobal() // 获取全局挂载的属性
+const tableData = ref<Goods[]>([]) // 表格展示的数据
 
 // 获取商品列表
-const { goodsTable } = getGoodsList()
+const { goodsList } = getGoodsList()
 // 添加商品
 const {
   addDrawerRef,
@@ -207,20 +231,22 @@ const {
 // 上下架商品
 const { takeDialogRef, _goods, openDialog, submitTakeOff } = takeOffGoods()
 // 删除商品
-const { delDialogRef, _delGoods, openDialogDel, submitDel } = delGoods()
+const { delDialogRef, openDialogDel, submitDel } = delGoods()
+// 按名称搜索商品
+const { searchName, search } = searchByName()
 
 // 获取商品
 function getGoodsList() {
-  const goodsTable = ref<Goods[]>([])
+  const goodsList = ref<Goods[]>([]) // 全部商品数据
 
   onMounted(async () => {
     const res = await getGoodsListAPI()
-    goodsTable.value = res.data
+    goodsList.value = res.data
+    tableData.value = res.data
   })
 
-  return { goodsTable }
+  return { goodsList }
 }
-
 // 添加商品
 function addGoods() {
   const addDrawerRef = ref()
@@ -298,7 +324,6 @@ function addGoods() {
     submit,
   }
 }
-
 // 修改商品
 function setGoods() {
   const setDrawerRef = ref()
@@ -366,8 +391,7 @@ function setGoods() {
     submitSet,
   }
 }
-
-// 下架商品
+// 上/下架商品
 function takeOffGoods() {
   const takeDialogRef = ref()
   const _goods = reactive<{ [name: string]: any }>({})
@@ -396,7 +420,6 @@ function takeOffGoods() {
 
   return { takeDialogRef, _goods, openDialog, submitTakeOff }
 }
-
 // 删除商品
 function delGoods() {
   const delDialogRef = ref()
@@ -420,7 +443,27 @@ function delGoods() {
     }
   }
 
-  return { delDialogRef, _delGoods, openDialogDel, submitDel }
+  return { delDialogRef, openDialogDel, submitDel }
+}
+// 按照名称搜索商品
+function searchByName() {
+  const searchName = ref<string>('')
+
+  const search = () => {
+    console.log(searchName)
+    tableData.value = goodsList.value.filter((item) => {
+      return item.name.indexOf(searchName.value) !== -1
+    })
+  }
+
+  return { searchName, search }
+}
+// 刷新按钮操作
+async function reloadFn() {
+  searchName.value = ''
+  const res = await getGoodsListAPI()
+  goodsList.value = res.data
+  tableData.value = res.data
 }
 </script>
 
