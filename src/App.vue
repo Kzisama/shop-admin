@@ -5,17 +5,32 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { logoutAPI } from '@/api/user'
 
-window.addEventListener('beforeunload', async () => {
-  await logoutAPI()
+const frontCloseTime = 'FrontCloseTime'
+
+const beforeCloseFn = () => {
+  localStorage.setItem(frontCloseTime, +new Date() + '')
+}
+const closedFn = async () => {
+  const frontTime = parseInt(localStorage.getItem(frontCloseTime) as string)
+  const gapTime = +new Date() - frontTime
+  if (gapTime <= 5) {
+    // 表示是关闭了页面
+    await logoutAPI()
+  } else {
+    // 刷新页面
+  }
+}
+onMounted(() => {
+  window.addEventListener('beforeunload', beforeCloseFn)
+  window.addEventListener('unload', closedFn)
 })
 
 onUnmounted(() => {
-  window.removeEventListener('beforeunload', async () => {
-    await logoutAPI()
-  })
+  window.removeEventListener('beforeunload', beforeCloseFn)
+  window.removeEventListener('unload', closedFn)
 })
 </script>
 
