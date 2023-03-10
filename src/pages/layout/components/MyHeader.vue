@@ -3,7 +3,7 @@
     <!-- logo -->
     <span class="logo">
       <el-icon class="mr-2">
-        <Shop />
+        <Eleme />
       </el-icon>
       超市管理系统
     </span>
@@ -45,12 +45,20 @@
     <FormDrawer ref="formDrawerRef" title="修改密码" destroy-on-close @submit="onSubmit(formRef)">
       <el-form ref="formRef" :rules="rules" :model="form">
         <el-form-item prop="oldpassword">
-          <el-input v-model="form.oldpassword" type="password" show-password placeholder="原密码">
-          </el-input>
+          <el-input
+            v-model="form.oldpassword"
+            type="password"
+            show-password
+            placeholder="原密码"
+          ></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="form.password" type="password" show-password placeholder="新密码">
-          </el-input>
+          <el-input
+            v-model="form.password"
+            type="password"
+            show-password
+            placeholder="新密码"
+          ></el-input>
         </el-form-item>
         <el-form-item prop="repassword">
           <el-input
@@ -58,8 +66,7 @@
             type="password"
             show-password
             placeholder="确认新密码"
-          >
-          </el-input>
+          ></el-input>
         </el-form-item>
       </el-form>
     </FormDrawer>
